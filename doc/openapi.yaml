@@ -16,7 +16,7 @@ tags:
   - name: Ingredients
     description: Recipe ingredients
 servers:
-  - url: https://contacts-app-sr3b.onrender.com
+  - url: https://testeorama.onrender.com
 paths:
     /api/auth/register:
     post:
