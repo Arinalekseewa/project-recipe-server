@@ -16,7 +16,7 @@ tags:
   - name: Ingredients
     description: Recipe ingredients
 servers:
-  - url: https://recipes-app.example.com
+  - url: https://contacts-app-sr3b.onrender.com
 paths:
     /api/auth/register:
     post:
