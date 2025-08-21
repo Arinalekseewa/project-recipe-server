@@ -1,0 +1,16 @@
+summary: Get user's own recipes (private)
+tags:
+  - Recipes
+security:
+  - bearerAuth: []
+responses:
+  '200':
+    description: List of user's recipes
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: '../../../schemas/recipe.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'

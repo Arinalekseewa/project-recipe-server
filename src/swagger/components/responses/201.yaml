@@ -1,0 +1,21 @@
+201:
+  description: Recipe successfully created
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - status
+          - message
+          - data
+        properties:
+          status:
+            type: integer
+            example: 201
+          message:
+            type: string
+            example: Successfully created a recipe!
+          data:
+            type: object
+            description: Newly created recipe
+            example: {}

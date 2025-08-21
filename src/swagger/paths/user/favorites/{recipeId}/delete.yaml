@@ -1,0 +1,22 @@
+summary: Remove recipe from favorites (private)
+tags:
+  - Favorites
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: recipeId
+    required: true
+    schema:
+      type: string
+responses:
+  '200':
+    description: Recipe removed from favorites
+    content:
+      application/json:
+        schema:
+          $ref: '../../../schemas/recipe.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'

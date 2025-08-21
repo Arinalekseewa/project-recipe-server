@@ -1,0 +1,23 @@
+type: object
+required:
+  - name
+  - email
+  - password
+properties:
+  name:
+    type: string
+    maxLength: 16
+    description: 'User name'
+    example: 'GoIT'
+  email:
+    type: string
+    format: email
+    maxLength: 128
+    description: 'User email'
+    example: 'goit@gmail.com'
+  password:
+    type: string
+    minLength: 8
+    maxLength: 128
+    description: 'User password'
+    example: 'MySecurePass123'

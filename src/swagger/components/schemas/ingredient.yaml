@@ -1,0 +1,23 @@
+type: object
+required:
+  - _id
+  - name
+  - desc
+  - img
+properties:
+  _id:
+    type: string
+    description: 'Ingredient ID'
+    example: '640c2dd963a319ea671e37aa'
+  name:
+    type: string
+    description: 'Ingredient name'
+    example: 'Squid'
+  desc:
+    type: string
+    description: 'Short description of the ingredient'
+    example: 'A type of cephalopod with a soft, cylindrical body and long tentacles.'
+  img:
+    type: string
+    description: 'Link to ingredient image'
+    example: 'https://ftp.goit.study/img/so-yummy/ingredients/640c2dd963a319ea671e37aa.png'
