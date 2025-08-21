@@ -10,3 +10,7 @@ export const createRecipe = async (payload) => {
 export const getAllRecipes = async () => {
   // Тіло функції
 };
+
+export function getRecipeById(id) {
+  return RecipesCollection.findById(id);
+};
