@@ -7,15 +7,42 @@ import { requestResetToken } from '../services/auth.js';
 import { resetPassword } from '../services/auth.js';
 
 export const registerUserController = async (req, res) => {
-  //Тіло функції
+  const user = await registerUser(req.body);
+
+  res.status(201).json({
+    status: 201,
+    message: ' User registered successfully',
+    data: user,
+  });
 };
 
 export const loginUserController = async (req, res) => {
-  //Тіло функції
+  const session = await loginUser(req.body);
+
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
+
+  res.json({
+    status: 200,
+    message: 'User logged in successfully',
+    data: {
+      accessToken: session.accessToken,
+      user: session.user,
+    },
+  });
 };
 
 export const logoutUserController = async (req, res) => {
-  //Тіло функції
+  if (req.cookies.sessionId) {
+    await logoutUser(req.cookies.sessionId);
+  }
+
+  res.clearCookie('sessionId');
+  res.clearCookie('refreshToken');
+
+  res.status(204).send();
 };
 
 export const requestResetEmailController = async (req, res) => {

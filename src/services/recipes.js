@@ -10,8 +10,6 @@ export const getAllRecipes = async () => {
   // Тіло функції
 };
 
-// Отримання власних рецептів (Ярослав)
-
 export const getUserOwnRecipesService = async ({
   userId,
   page = 1,
@@ -24,4 +22,6 @@ export const getUserOwnRecipesService = async ({
     .limit(limit);
 
   return recipes;
+export function getRecipeById(id) {
+  return RecipesCollection.findById(id);
 };

@@ -7,6 +7,7 @@ import { authenticate } from '../middlewares/authenticate.js';
 import {
   createRecipeController,
   getAllRecipesController,
+  getRecipeByIdController,
 } from '../controllers/recipes.js';
 import { getUserOwnRecipesController } from '../controllers/recipes.js';
 
@@ -22,5 +23,7 @@ router.post(
   ctrlWrapper(createRecipeController),
 );
 router.get('/own', ctrlWrapper(getUserOwnRecipesController));
+router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController));
+router.get('/:id', ctrlWrapper(getRecipeByIdController));
 
 export default router;

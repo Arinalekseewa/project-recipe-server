@@ -12,16 +12,57 @@ import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 
-export const registerUser = async (payload) => {
-  //Тіло функції
+export const registerUser = async (newUser) => {
+  const user = await UsersCollection.findOne({ email: newUser.email });
+
+  if (user)
+    throw createHttpError(
+      409,
+      `User with email ${newUser.email} already exists`
+    );
+
+  const encryptedPassword = await bcrypt.hash(newUser.password, 10);
+
+  return await UsersCollection.create({
+    ...newUser,
+    password: encryptedPassword,
+  });
 };
 
-export const loginUser = async (payload) => {
-  //Тіло функції
+export const loginUser = async (usersCredentials) => {
+  const user = await UsersCollection.findOne({ email: usersCredentials.email });
+
+  if (!user) {
+    throw createHttpError(401, `User not found`);
+  }
+
+  const isEqual = await bcrypt.compare(
+    usersCredentials.password,
+    user.password
+  );
+
+  if (!isEqual) {
+    throw createHttpError(401, `Unauthorized`);
+  }
+
+  await SessionsCollection.deleteOne({
+    userId: user._id,
+  });
+
+  const accessToken = randomBytes(30).toString('base64');
+  const refreshToken = randomBytes(30).toString('base64');
+
+  return await SessionsCollection.create({
+    userId: user._id,
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil: new Date(Date.now() + SIXTY_MINUTES),
+    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
+  });
 };
 
 export const logoutUser = async (sessionId) => {
-  //Тіло функції
+  await SessionsCollection.findByIdAndDelete(sessionId);
 };
 
 const createSession = () => {
@@ -72,11 +113,9 @@ export const requestResetToken = async (email) => {
     throw createHttpError(404, 'User not found!');
   }
 
-  const token = jwt.sign(
-    { sub: user._id, email },
-    getEnvVar('JWT_SECRET'),
-    { expiresIn: '5m' }
-  );
+  const token = jwt.sign({ sub: user._id, email }, getEnvVar('JWT_SECRET'), {
+    expiresIn: '5m',
+  });
 
   const source = await fs.readFile(filePath, 'utf-8');
   const template = handlebars.compile(source);
@@ -94,7 +133,10 @@ export const requestResetToken = async (email) => {
       html,
     });
   } catch (err) {
-    throw createHttpError(500, 'Failed to send the email, please try again later.');
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
   }
 };
 
