@@ -9,12 +9,20 @@ import {
   getAllRecipesController,
   getRecipeByIdController,
 } from '../controllers/recipes.js';
+import { getUserOwnRecipesController } from '../controllers/recipes.js';
 
 const router = Router();
 
 router.use(authenticate);
 
 router.get('/', ctrlWrapper(getAllRecipesController));
+router.post(
+  '/',
+  upload.single('photo'),
+  validateBody(createRecipeSchema),
+  ctrlWrapper(createRecipeController),
+);
+router.get('/own', ctrlWrapper(getUserOwnRecipesController));
 router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController));
 router.get('/:id', ctrlWrapper(getRecipeByIdController));
 

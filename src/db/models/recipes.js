@@ -1,28 +1,44 @@
 import { model, Schema } from 'mongoose';
 
-const recipesSchema = new Schema(
+const recipeSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
     },
-    age: {
-      type: Number,
-      required: true,
-    },
-    gender: {
+    category: {
       type: String,
       required: true,
-      enum: ['male', 'female', 'other'],
     },
-    avgMark: {
-      type: Number,
+    ingredients: [
+      {
+        id: {
+          type: Schema.Types.ObjectId,
+          ref: 'ingredient',
+          required: true,
+        },
+        measure: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    instructions: {
+      type: String,
       required: true,
     },
-    onDuty: {
-      type: Boolean,
+    thumb: {
+      type: String, // посилання на картинку
+      required: false,
+    },
+    time: {
+      type: String, // наприклад: "30 min"
       required: true,
-      default: false,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
     },
   },
   {
@@ -31,4 +47,4 @@ const recipesSchema = new Schema(
   },
 );
 
-export const RecipesCollection = model('recipe', recipesSchema);
+export const RecipesCollection = model('recipe', recipeSchema);
