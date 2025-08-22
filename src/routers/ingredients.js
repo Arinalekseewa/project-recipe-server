@@ -1,9 +1,10 @@
 import express from "express";
 import { getAllIngredients } from "../controllers/ingredients.js";
+import ctrlWrapper from "../utils/ctrlWrapper.js";
 
 const router = express.Router();
 
-// GET /api/ingredients
-router.get("/", getAllIngredients);
+
+router.get("/", ctrlWrapper(getAllIngredients));
 
 export default router;

@@ -19,8 +19,6 @@ export function startServer() {
   app.use('/uploads', express.static(UPLOAD_DIR));
   app.use('/api-docs', swaggerDocs());
 
-app.use("/api/categories", categoriesRouter);
-app.use("/api/ingredients", ingredientsRouter);
 
   app.use(errorHandler);
 

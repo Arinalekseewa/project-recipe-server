@@ -1,0 +1,53 @@
+{
+  "name": "project-testeorama-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint src/**/*.js",
+    "start": "node ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js",
+    "build": "npm run build-docs",
+    "build-docs": "redocly bundle docs/openapi.yaml --ext json -o docs/swagger.json",
+    "preview-docs": "redocly preview-docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arinalekseewa/project-Testeorama-server.git"
+  },
+  "keywords": [],
+  "author": "Arina <arina.kudar@gmail.com>",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Arinalekseewa/project-Testeorama-server/issues"
+  },
+  "homepage": "https://github.com/Arinalekseewa/project-Testeorama-server#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@redocly/cli": "^2.0.6",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.3.0",
+    "nodemon": "^3.1.10",
+    "pino-pretty": "^13.1.1",
+    "typescript-eslint": "^8.40.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "http-errors": "^2.0.0",
+    "joi": "^18.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.18.0",
+    "mongoose": "^8.17.2",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.5",
+    "pino-http": "^10.5.0",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

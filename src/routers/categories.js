@@ -1,9 +1,9 @@
 import express from "express";
 import { getAllCategories } from "../controllers/categories.js";
+import ctrlWrapper from "../utils/ctrlWrapper.js"; 
 
 const router = express.Router();
 
-// GET /api/categories
-router.get("/", getAllCategories);
+router.get("/", ctrlWrapper(getAllCategories));
 
 export default router;
