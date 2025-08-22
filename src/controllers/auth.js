@@ -91,9 +91,11 @@ const setupSession = (res, session) => {
 };
 
 export const getCurrentUserController = async (req, res) => {
+  const { _id, name, email, avatar, followers, following } = req.user;
+
   res.json({
     status: 200,
     message: 'Current user info',
-    data: req.user,
+    data: { _id, name, email, avatar, followers, following },
   });
 };

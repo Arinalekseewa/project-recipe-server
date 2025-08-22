@@ -10,11 +10,7 @@ import { refreshUserSessionController } from '../controllers/auth.js';
 import { requestResetEmailSchema } from '../validation/auth.js';
 import { requestResetEmailController } from '../controllers/auth.js';
 import { resetPasswordSchema } from '../validation/auth.js';
-import {
-  resetPasswordController,
-  getCurrentUserController,
-} from '../controllers/auth.js';
-import { authenticate } from '../middlewares/authenticate.js';
+import { resetPasswordController } from '../controllers/auth.js';
 const router = Router();
 
 router.post(
@@ -39,5 +35,4 @@ router.post(
   validateBody(resetPasswordSchema),
   ctrlWrapper(resetPasswordController),
 );
-router.get('/current', authenticate, ctrlWrapper(getCurrentUserController));
 export default router;
