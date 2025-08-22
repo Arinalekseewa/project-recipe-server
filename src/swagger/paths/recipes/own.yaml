@@ -1,0 +1,66 @@
+get:
+  tags: [Recipes]
+  summary: Get user's own recipes
+  operationId: getUserOwnRecipes
+  description: Retrieve all recipes created by the authenticated user.
+  security:
+    - bearerAuth: []
+  parameters:
+    - in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+      description: Page number for pagination
+    - in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+      description: Number of items per page
+    - in: query
+      name: sortBy
+      required: false
+      schema:
+        type: string
+        enum: [title, category, time, createdAt]
+      description: Field to sort by
+    - in: query
+      name: sortOrder
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
+      description: Sort order (ascending or descending)
+  responses:
+    '200':
+      description: Successfully retrieved users own recipes
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [status, message, data]
+            properties:
+              status:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: Successfully found users recipes!
+              data:
+                type: array
+                items:
+                  $ref: ../../../components/schemas/ownRecipe.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema: { $ref: ../../../components/schemas/Error.yaml }
+    '500':
+      description: Internal server error
+      content:
+        application/json:
+          schema: { $ref: ../../../components/schemas/Error.yaml }
