@@ -62,7 +62,7 @@ export const loginUser = async (usersCredentials) => {
 };
 
 export const logoutUser = async (sessionId) => {
-  //Тіло функції
+  await SessionsCollection.findByIdAndDelete(sessionId);
 };
 
 const createSession = () => {
@@ -113,11 +113,9 @@ export const requestResetToken = async (email) => {
     throw createHttpError(404, 'User not found!');
   }
 
-  const token = jwt.sign(
-    { sub: user._id, email },
-    getEnvVar('JWT_SECRET'),
-    { expiresIn: '5m' }
-  );
+  const token = jwt.sign({ sub: user._id, email }, getEnvVar('JWT_SECRET'), {
+    expiresIn: '5m',
+  });
 
   const source = await fs.readFile(filePath, 'utf-8');
   const template = handlebars.compile(source);
@@ -135,7 +133,10 @@ export const requestResetToken = async (email) => {
       html,
     });
   } catch (err) {
-    throw createHttpError(500, 'Failed to send the email, please try again later.');
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
   }
 };
 
