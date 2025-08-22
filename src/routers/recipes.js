@@ -18,6 +18,7 @@ router.use(authenticate);
 router.get('/', ctrlWrapper(getAllRecipesController));
 router.post(
   '/',
+  authenticate,
   upload.single('photo'),
   validateBody(createRecipeSchema),
   ctrlWrapper(createRecipeController),
@@ -27,3 +28,4 @@ router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlW
 router.get('/:id', ctrlWrapper(getRecipeByIdController));
 
 export default router;
+  
