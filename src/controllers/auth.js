@@ -62,7 +62,6 @@ export const resetPasswordController = async (req, res) => {
     data: {},
   });
 };
-
 export const refreshUserSessionController = async (req, res) => {
   const session = await refreshUsersSession({
     sessionId: req.cookies.sessionId,
@@ -88,5 +87,13 @@ const setupSession = (res, session) => {
   res.cookie('sessionId', session._id, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
+  });
+};
+
+export const getCurrentUserController = async (req, res) => {
+  res.json({
+    status: 200,
+    message: 'Current user info',
+    data: req.user,
   });
 };
