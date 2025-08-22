@@ -1,4 +1,6 @@
 import { getUserOwnRecipesService } from '../services/recipes.js';
+import createHttpError from 'http-errors';
+import { getRecipeById } from '../services/recipes.js';
 
 export const getUserOwnRecipesController = async (req, res, next) => {
   try {
@@ -15,10 +17,7 @@ export const getUserOwnRecipesController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
-import createHttpError from 'http-errors';
-import { getRecipeById } from '../services/recipes.js';
-
+};
 
 export async function getRecipeByIdController(req, res) {
     const recipe = await getRecipeById(req.params.id);
