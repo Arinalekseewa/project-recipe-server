@@ -15,21 +15,67 @@ export const getUserOwnRecipesController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
 
 import createHttpError from 'http-errors';
 import { getRecipeById } from '../services/recipes.js';
 
-
 export async function getRecipeByIdController(req, res) {
-    const recipe = await getRecipeById(req.params.id);
+  const recipe = await getRecipeById(req.params.id);
 
-    if (recipe === null) {
-        throw new createHttpError.NotFound('Recipe not found');
-    }
+  if (recipe === null) {
+    throw new createHttpError.NotFound('Recipe not found');
+  }
 
-    res.json({
-      status: 200,
-      message: `Successfully found recipe!`,
-      data: recipe,
-    });
+  res.json({
+    status: 200,
+    message: `Successfully found recipe!`,
+    data: recipe,
+  });
+}
+
+const {
+  addToFavorites,
+  removeFromFavorites,
+  getFavorites,
+} = require('../services/recipes');
+const { ctrlWrapper } = require('../utils/ctrlWrapper');
+
+const addFavorite = ctrlWrapper(async (req, res) => {
+  const { id: userId } = req.user;
+  const { recipeId } = req.params;
+
+  const recipe = await addToFavorites(userId, recipeId);
+
+  res.status(201).json({
+    message: 'Recipe added to favorites',
+    recipe,
+  });
+});
+
+const removeFavorite = ctrlWrapper(async (req, res) => {
+  const { id: userId } = req.user;
+  const { recipeId } = req.params;
+
+  const result = await removeFromFavorites(userId, recipeId);
+
+  res.json(result);
+});
+
+const getFavoriteRecipes = ctrlWrapper(async (req, res) => {
+  const { id: userId } = req.user;
+  const paginationParams = req.pagination;
+
+  const favorites = await getFavorites(userId, paginationParams);
+
+  res.json({
+    favorites,
+    pagination: req.pagination,
+  });
+});
+
+module.exports = {
+  addFavorite,
+  removeFavorite,
+  getFavoriteRecipes,
 };
