@@ -7,15 +7,42 @@ import { requestResetToken } from '../services/auth.js';
 import { resetPassword } from '../services/auth.js';
 
 export const registerUserController = async (req, res) => {
-  //Тіло функції
+  const user = await registerUser(req.body);
+
+  res.status(201).json({
+    status: 201,
+    message: ' User registered successfully',
+    data: user,
+  });
 };
 
 export const loginUserController = async (req, res) => {
-  //Тіло функції
+  const session = await loginUser(req.body);
+
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
+
+  res.json({
+    status: 200,
+    message: 'User logged in successfully',
+    data: {
+      accessToken: session.accessToken,
+      user: session.user,
+    },
+  });
 };
 
 export const logoutUserController = async (req, res) => {
-  //Тіло функції
+  if (req.cookies.sessionId) {
+    await logoutUser(req.cookies.sessionId);
+  }
+
+  res.clearCookie('sessionId');
+  res.clearCookie('refreshToken');
+
+  res.status(204).send();
 };
 
 export const requestResetEmailController = async (req, res) => {
@@ -35,7 +62,6 @@ export const resetPasswordController = async (req, res) => {
     data: {},
   });
 };
-
 export const refreshUserSessionController = async (req, res) => {
   const session = await refreshUsersSession({
     sessionId: req.cookies.sessionId,
@@ -61,5 +87,15 @@ const setupSession = (res, session) => {
   res.cookie('sessionId', session._id, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
+  });
+};
+
+export const getCurrentUserController = async (req, res) => {
+  const { _id, name, email, avatar, followers, following } = req.user;
+
+  res.json({
+    status: 200,
+    message: 'Current user info',
+    data: { _id, name, email, avatar, followers, following },
   });
 };
