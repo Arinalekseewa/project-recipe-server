@@ -8,11 +8,11 @@ import {
   //createRecipeController,
   //getAllRecipesController,
   getRecipeByIdController,
+  getUserOwnRecipesController,
   addFavorite,
   removeFavorite,
   getFavoriteRecipes,
 } from '../controllers/recipes.js';
-import { getUserOwnRecipesController } from '../controllers/recipes.js';
 import { isValidId } from "../middlewares/isValidId.js";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { parseSortParams } from "../utils/parseSortParams.js";
@@ -23,9 +23,9 @@ router.use(authenticate);
 
 //router.get('/', ctrlWrapper(getAllRecipesController));
 //router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
-router.get('/own', ctrlWrapper(getUserOwnRecipesController));
+router.get('/own', authenticate, ctrlWrapper(getUserOwnRecipesController));
 //router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
-router.get('/:recipeId', ctrlWrapper(getRecipeByIdController));
+router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
 
 router.get(
   '/favorites',
