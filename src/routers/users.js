@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticate } from '../middlewares/authenticate.js';
-import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
-import { getCurrentUserController } from '../controllers/users/getCurrentUserController.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { getCurrentUserController } from '../controllers/auth.js';
 
 const router = Router();
 

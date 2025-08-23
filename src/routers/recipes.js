@@ -5,38 +5,26 @@ import { validateBody } from '../middlewares/validateBody.js';
 import { createRecipeSchema } from '../validation/recipes.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import {
-  createRecipeController,
-  getAllRecipesController,
+  //createRecipeController,
+  //getAllRecipesController,
   getRecipeByIdController,
   addFavorite,
   removeFavorite,
   getFavoriteRecipes,
 } from '../controllers/recipes.js';
 import { getUserOwnRecipesController } from '../controllers/recipes.js';
-const { isValidId } = require('../middlewares/isValidId');
-const {
-  parsePaginationParams,
-} = require('../middlewares/parsePaginationParams');
-const { parseSortParams } = require('../middlewares/parseSortParams');
+import { isValidId } from "../middlewares/isValidId.js";
+import { parsePaginationParams } from "../utils/parsePaginationParams.js";
+import { parseSortParams } from "../utils/parseSortParams.js";
 
 const router = Router();
 
 router.use(authenticate);
 
-router.get('/', ctrlWrapper(getAllRecipesController));
-router.post(
-  '/',
-  upload.single('photo'),
-  validateBody(createRecipeSchema),
-  ctrlWrapper(createRecipeController),
-);
+//router.get('/', ctrlWrapper(getAllRecipesController));
+//router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
 router.get('/own', ctrlWrapper(getUserOwnRecipesController));
-router.post(
-  '/',
-  upload.single('photo'),
-  validateBody(createRecipeSchema),
-  ctrlWrapper(createRecipeController),
-);
+//router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
 router.get('/:id', ctrlWrapper(getRecipeByIdController));
 
 router.get(

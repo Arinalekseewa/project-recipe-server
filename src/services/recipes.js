@@ -1,7 +1,7 @@
 import { RecipesCollection } from '../db/models/recipes.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { SORT_ORDER } from '../constants/index.js';
-import { User } from '../db/models/user.js';
+import { UsersCollection } from '../db/models/user.js';
 
 export const createRecipe = async (payload) => {
   // Тіло функції
@@ -29,7 +29,7 @@ export function getRecipeById(id) {
 }
 
 export const addToFavorites = async (userId, recipeId) => {
-  const user = await User.findById(userId);
+  const user = await UsersCollection.findById(userId);
 
   if (!user) {
     throw new Error('User not found');

@@ -1,6 +1,7 @@
 import { getUserOwnRecipesService } from '../services/recipes.js';
 import createHttpError from 'http-errors';
 import { getRecipeById } from '../services/recipes.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 export const getUserOwnRecipesController = async (req, res, next) => {
   try {
@@ -31,16 +32,9 @@ export async function getRecipeByIdController(req, res) {
     message: `Successfully found recipe!`,
     data: recipe,
   });
-}
+};
 
-const {
-  addToFavorites,
-  removeFromFavorites,
-  getFavorites,
-} = require('../services/recipes');
-const { ctrlWrapper } = require('../utils/ctrlWrapper');
-
-const addFavorite = ctrlWrapper(async (req, res) => {
+export const addFavorite = ctrlWrapper(async (req, res) => {
   const { id: userId } = req.user;
   const { recipeId } = req.params;
 
@@ -52,7 +46,7 @@ const addFavorite = ctrlWrapper(async (req, res) => {
   });
 });
 
-const removeFavorite = ctrlWrapper(async (req, res) => {
+export const removeFavorite = ctrlWrapper(async (req, res) => {
   const { id: userId } = req.user;
   const { recipeId } = req.params;
 
@@ -61,7 +55,7 @@ const removeFavorite = ctrlWrapper(async (req, res) => {
   res.json(result);
 });
 
-const getFavoriteRecipes = ctrlWrapper(async (req, res) => {
+export const getFavoriteRecipes = ctrlWrapper(async (req, res) => {
   const { id: userId } = req.user;
   const paginationParams = req.pagination;
 
@@ -72,9 +66,3 @@ const getFavoriteRecipes = ctrlWrapper(async (req, res) => {
     pagination: req.pagination,
   });
 });
-
-module.exports = {
-  addFavorite,
-  removeFavorite,
-  getFavoriteRecipes,
-};
