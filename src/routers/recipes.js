@@ -36,10 +36,11 @@ router.get(
 );
 
 router.post(
-  '/favorites/:recipeId',
+  '/',
   authenticate,
-  isValidId,
-  addFavorite,
+  upload.single('photo'),
+  validateBody(createRecipeSchema),
+  ctrlWrapper(createRecipeController),
 );
 
 router.delete(
@@ -50,3 +51,4 @@ router.delete(
 );
 
 export default router;
+  
