@@ -1,0 +1,1 @@
+{"version":3,"file":"package.js","sourceRoot":"","sources":["../../src/utils/package.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,aAAa,CAAC;AAE5C,MAAM,WAAW,GAAG,aAAa,CAAC,MAAM,CAAC,IAAI,CAAC,GAAG,IAAI,SAAS,CAAC,CAAC,oBAAoB,CAAC,CAAC;AAEtF,MAAM,CAAC,MAAM,EAAE,OAAO,EAAE,IAAI,EAAE,OAAO,EAAE,GAAG,WAAW,CAAC"}

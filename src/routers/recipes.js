@@ -8,9 +8,9 @@ import {
   //createRecipeController,
   //getAllRecipesController,
   getRecipeByIdController,
-  addFavorite,
-  removeFavorite,
-  getFavoriteRecipes,
+  // addFavorite,
+  // removeFavorite,
+  // getFavoriteRecipes,
 } from '../controllers/recipes.js';
 import { getUserOwnRecipesController } from '../controllers/recipes.js';
 import { isValidId } from "../middlewares/isValidId.js";
@@ -27,26 +27,26 @@ router.get('/own', ctrlWrapper(getUserOwnRecipesController));
 //router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
 router.get('/:recipeId', ctrlWrapper(getRecipeByIdController));
 
-router.get(
-  '/favorites',
-  authenticate,
-  parsePaginationParams,
-  parseSortParams,
-  getFavoriteRecipes,
-);
+// router.get(
+//   '/favorites',
+//   authenticate,
+//   parsePaginationParams,
+//   parseSortParams,
+//   getFavoriteRecipes,
+// );
 
-router.post(
-  '/favorites/:recipeId',
-  authenticate,
-  isValidId,
-  addFavorite,
-);
+// router.post(
+//   '/favorites/:recipeId',
+//   authenticate,
+//   isValidId,
+//   addFavorite,
+// );
 
-router.delete(
-  '/favorites/:recipeId',
-  authenticate,
-  isValidId,
-  removeFavorite,
-);
+// router.delete(
+//   '/favorites/:recipeId',
+//   authenticate,
+//   isValidId,
+//   removeFavorite,
+// );
 
 export default router;

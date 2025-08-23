@@ -2,7 +2,7 @@
 import { getUserOwnRecipesService } from '../services/recipes.js';
 import createHttpError from 'http-errors';
 import { getRecipeById } from '../services/recipes.js';
-import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+// import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 export const getUserOwnRecipesController = async (req, res, next) => {
   try {
@@ -35,38 +35,3 @@ export async function getRecipeByIdController(req, res) {
   });
 };
 
-<<<<<<< HEAD
-=======
-export const addFavorite = ctrlWrapper(async (req, res) => {
-  const { id: userId } = req.user;
-  const { recipeId } = req.params;
-
-  const recipe = await addToFavorites(userId, recipeId);
-
-  res.status(201).json({
-    message: 'Recipe added to favorites',
-    recipe,
-  });
-});
-
-export const removeFavorite = ctrlWrapper(async (req, res) => {
-  const { id: userId } = req.user;
-  const { recipeId } = req.params;
-
-  const result = await removeFromFavorites(userId, recipeId);
-
-  res.json(result);
-});
-
-export const getFavoriteRecipes = ctrlWrapper(async (req, res) => {
-  const { id: userId } = req.user;
-  const paginationParams = req.pagination;
-
-  const favorites = await getFavorites(userId, paginationParams);
-
-  res.json({
-    favorites,
-    pagination: req.pagination,
-  });
-});
->>>>>>> 66f4c7a18047388fb9ab970970d07fe9a75302cf
