@@ -14,8 +14,8 @@ import {
   getFavoriteRecipes,
 } from '../controllers/recipes.js';
 import { isValidId } from "../middlewares/isValidId.js";
-import { parsePaginationParams } from "../utils/parsePaginationParams.js";
-import { parseSortParams } from "../utils/parseSortParams.js";
+//import { parsePaginationParams } from "../utils/parsePaginationParams.js";
+//import { parseSortParams } from "../utils/parseSortParams.js";
 
 const router = Router();
 
@@ -30,9 +30,7 @@ router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
 router.get(
   '/favorites',
   authenticate,
-  parsePaginationParams,
-  parseSortParams,
-  getFavoriteRecipes,
+  ctrlWrapper(getFavoriteRecipes),
 );
 
 router.post(

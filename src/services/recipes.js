@@ -71,7 +71,7 @@ export const removeFromFavorites = async (userId, recipeId) => {
 };
 
 export const getFavorites = async (userId, paginationParams) => {
-  const user = await User.findById(userId).populate({
+  const user = await UsersCollection.findById(userId).populate({
     path: 'favorites',
     options: {
       limit: paginationParams.limit,

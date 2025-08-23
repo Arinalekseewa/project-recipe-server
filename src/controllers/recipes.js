@@ -2,6 +2,8 @@ import { getUserOwnRecipesService } from '../services/recipes.js';
 import createHttpError from 'http-errors';
 import { getRecipeById } from '../services/recipes.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { getFavorites } from "../services/recipes.js";
+import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 
 export const getUserOwnRecipesController = async (req, res, next) => {
   try {
@@ -57,9 +59,9 @@ export const removeFavorite = ctrlWrapper(async (req, res) => {
 
 export const getFavoriteRecipes = ctrlWrapper(async (req, res) => {
   const { id: userId } = req.user;
-  const paginationParams = req.pagination;
+  const parsePaginationParams = req.pagination;
 
-  const favorites = await getFavorites(userId, paginationParams);
+  const favorites = await getFavorites(userId, parsePaginationParams);
 
   res.json({
     favorites,
