@@ -5,26 +5,20 @@ import { UsersCollection } from '../db/models/user.js';
 import { SIXTY_MINUTES, ONE_DAY } from '../constants/index.js';
 import { SessionsCollection } from '../db/models/session.js';
 import jwt from 'jsonwebtoken';
-import { SMTP } from '../constants/index.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { sendEmail } from '../utils/sendMail.js';
 import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 
-export const registerUser = async (newUser) => {
-  const user = await UsersCollection.findOne({ email: newUser.email });
+export const registerUser = async (payload) => {
+  const user = await UsersCollection.findOne({ email: payload.email });
+  if (user) throw createHttpError(409, 'Email in use');
 
-  if (user)
-    throw createHttpError(
-      409,
-      `User with email ${newUser.email} already exists`
-    );
-
-  const encryptedPassword = await bcrypt.hash(newUser.password, 10);
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
   return await UsersCollection.create({
-    ...newUser,
+    ...payload,
     password: encryptedPassword,
   });
 };

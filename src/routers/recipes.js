@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { upload } from '../middlewares/multer.js';
+//import { upload } from '../middlewares/multer.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import { validateBody } from '../middlewares/validateBody.js';
-import { createRecipeSchema } from '../validation/recipes.js';
+//import { validateBody } from '../middlewares/validateBody.js';
+//import { createRecipeSchema } from '../validation/recipes.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import {
   //createRecipeController,
@@ -25,7 +25,7 @@ router.use(authenticate);
 //router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
 router.get('/own', ctrlWrapper(getUserOwnRecipesController));
 //router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
-router.get('/:id', ctrlWrapper(getRecipeByIdController));
+router.get('/:recipeId', ctrlWrapper(getRecipeByIdController));
 
 router.get(
   '/favorites',
@@ -38,14 +38,14 @@ router.get(
 router.post(
   '/favorites/:recipeId',
   authenticate,
-  isValidId('recipeId'),
+  isValidId,
   addFavorite,
 );
 
 router.delete(
   '/favorites/:recipeId',
   authenticate,
-  isValidId('recipeId'),
+  isValidId,
   removeFavorite,
 );
 
