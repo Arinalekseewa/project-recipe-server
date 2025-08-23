@@ -8,8 +8,16 @@ import {
   createRecipeController,
   getAllRecipesController,
   getRecipeByIdController,
+  addFavorite,
+  removeFavorite,
+  getFavoriteRecipes,
 } from '../controllers/recipes.js';
 import { getUserOwnRecipesController } from '../controllers/recipes.js';
+const { isValidId } = require('../middlewares/isValidId');
+const {
+  parsePaginationParams,
+} = require('../middlewares/parsePaginationParams');
+const { parseSortParams } = require('../middlewares/parseSortParams');
 
 const router = Router();
 
@@ -23,7 +31,34 @@ router.post(
   ctrlWrapper(createRecipeController),
 );
 router.get('/own', ctrlWrapper(getUserOwnRecipesController));
-router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController));
+router.post(
+  '/',
+  upload.single('photo'),
+  validateBody(createRecipeSchema),
+  ctrlWrapper(createRecipeController),
+);
 router.get('/:id', ctrlWrapper(getRecipeByIdController));
+
+router.get(
+  '/favorites',
+  authenticate,
+  parsePaginationParams,
+  parseSortParams,
+  getFavoriteRecipes,
+);
+
+router.post(
+  '/favorites/:recipeId',
+  authenticate,
+  isValidId('recipeId'),
+  addFavorite,
+);
+
+router.delete(
+  '/favorites/:recipeId',
+  authenticate,
+  isValidId('recipeId'),
+  removeFavorite,
+);
 
 export default router;
