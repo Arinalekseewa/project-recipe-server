@@ -27,28 +27,27 @@ router.get('/own', authenticate, ctrlWrapper(getUserOwnRecipesController));
 //router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
 router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
 
-router.get(
-  '/favorites',
-  authenticate,
-  parsePaginationParams,
-  parseSortParams,
-  getFavoriteRecipes,
-);
+// router.get(
+//   '/favorites',
+//   authenticate,
+//   parsePaginationParams,
+//   parseSortParams,
+//   getFavoriteRecipes,
+// );
 
-router.post(
-  '/',
-  authenticate,
-  upload.single('photo'),
-  validateBody(createRecipeSchema),
-  ctrlWrapper(createRecipeController),
-);
+// router.post(
+//   '/',
+//   authenticate,
+//   upload.single('photo'),
+//   validateBody(createRecipeSchema),
+//   ctrlWrapper(createRecipeController),
+// );
 
-router.delete(
-  '/favorites/:recipeId',
-  authenticate,
-  isValidId,
-  removeFavorite,
-);
+// router.delete(
+//   '/favorites/:recipeId',
+//   authenticate,
+//   isValidId,
+//   removeFavorite,
+// );
 
 export default router;
-  

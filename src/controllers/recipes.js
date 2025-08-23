@@ -3,7 +3,7 @@ import {
   createRecipe,
   getUserOwnRecipesService,
   getRecipeById,
-  getUserOwnRecipesService,
+  //getUserOwnRecipesService,
 } from '../services/recipes.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
@@ -42,21 +42,6 @@ export const getUserOwnRecipesController = async (req, res, next) => {
       status: 200,
       message: "Successfully fetched user's own recipes",
       data: recipes,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getRecipeByIdController = async (req, res, next) => {
-  try {
-    const recipe = await getRecipeById(req.params.id);
-    if (!recipe) return next(createHttpError(404, 'Recipe not found'));
-
-    res.json({
-      status: 200,
-      message: 'Successfully found recipe!',
-      data: recipe,
     });
   } catch (error) {
     next(error);

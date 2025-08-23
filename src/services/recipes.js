@@ -77,13 +77,6 @@ export const getUserOwnRecipesService = async ({
   return { items, ...pagination };
 };
 
-
-export function getRecipeById(id) {
-  return RecipesCollection.findById(id);
-}
-
-  return recipes;
-};
 export function getRecipeById(id) {
   return RecipesCollection.findById(id);
 }
