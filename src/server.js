@@ -12,7 +12,7 @@ export function startServer() {
   const app = express();
 
   app.use(cors());
-  app.use(pino(),);
+  app.use(pino());
   app.use(express.json());
   app.use(cookieParser());
   app.use(router);
@@ -22,7 +22,7 @@ export function startServer() {
 
   app.use(errorHandler);
 
-  app.use(/(.*)/, notFoundHandler);
+  app.use(notFoundHandler);
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
