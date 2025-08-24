@@ -1,3 +1,13 @@
+// ******* ================== Imports ================== ********
+
+import { getUserOwnRecipesService } from '../services/recipes.js';
+import createHttpError from 'http-errors';
+import { getRecipeById } from '../services/recipes.js';
+
+// ********* ================== Controllers ================== *********//
+
+// ------------------- Yaroslav: Get users own recipes ---------------------
+
 import createHttpError from 'http-errors';
 import {
   createRecipe,
@@ -54,6 +64,8 @@ export const getUserOwnRecipesController = async (req, res, next) => {
   }
 };
 
+// ---------------- Ivan: Get recipe by ID --------------------
+
 export async function getRecipeByIdController(req, res) {
   const recipe = await getRecipeById(req.params.id);
 
@@ -68,38 +80,28 @@ export async function getRecipeByIdController(req, res) {
   });
 }
 
-// export const addFavorite = ctrlWrapper(async (req, res) => {
-//   const { id: userId } = req.user;
-//   const { recipeId } = req.params;
+// --- TODO: Create recipe controller (Потрібно виконати...) ---
 
-//   const recipe = await addToFavorites(userId, recipeId);
+export const createRecipeController = (req, res) => {
+  res.status(501).json({
+    status: 501,
+    message: 'createRecipeController is not implemented yet',
+  };
+export async function getRecipeByIdController(req, res) {
+  const recipe = await getRecipeById(req.params.id);
 
-//   res.status(201).json({
-//     message: 'Recipe added to favorites',
-//     recipe,
-//   });
-// });
+  if (recipe === null) {
+    throw new createHttpError.NotFound('Recipe not found');
+  };
 
-// export const removeFavorite = ctrlWrapper(async (req, res) => {
-//   const { id: userId } = req.user;
-//   const { recipeId } = req.params;
+  res.json({
+    status: 200,
+    message: `Successfully found recipe!`,
+    data: recipe,
+  });
+};
 
-//   const result = await removeFromFavorites(userId, recipeId);
 
-//   res.json(result);
-// });
-
-// export const getFavoriteRecipes = ctrlWrapper(async (req, res) => {
-//   const { id: userId } = req.user;
-//   const paginationParams = req.pagination;
-
-//   const favorites = await getFavorites(userId, paginationParams);
-
-//   res.json({
-//     favorites,
-//     pagination: req.pagination,
-//   });
-// });
 
 // GET /recipes/favorites
 export const getFavoriteRecipes = async (req, res) => {
