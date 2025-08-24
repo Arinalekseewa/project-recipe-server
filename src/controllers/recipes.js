@@ -1,4 +1,12 @@
+// ******* ================== Imports ================== ********
+
 import { getUserOwnRecipesService } from '../services/recipes.js';
+import createHttpError from 'http-errors';
+import { getRecipeById } from '../services/recipes.js';
+
+// ********* ================== Controllers ================== *********//
+
+// ------------------- Yaroslav: Get users own recipes ---------------------
 
 export const getUserOwnRecipesController = async (req, res, next) => {
   try {
@@ -15,21 +23,29 @@ export const getUserOwnRecipesController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
 
-import createHttpError from 'http-errors';
-import { getRecipeById } from '../services/recipes.js';
-
+// ---------------- Ivan: Get recipe by ID --------------------
 
 export async function getRecipeByIdController(req, res) {
-    const recipe = await getRecipeById(req.params.id);
+  const recipe = await getRecipeById(req.params.id);
 
-    if (recipe === null) {
-        throw new createHttpError.NotFound('Recipe not found');
-    }
+  if (recipe === null) {
+    throw new createHttpError.NotFound('Recipe not found');
+  }
 
-    res.json({
-      status: 200,
-      message: `Successfully found recipe!`,
-      data: recipe,
-    });
+  res.json({
+    status: 200,
+    message: `Successfully found recipe!`,
+    data: recipe,
+  });
+}
+
+// --- TODO: Create recipe controller (Потрібно виконати...) ---
+
+export const createRecipeController = (req, res) => {
+  res.status(501).json({
+    status: 501,
+    message: 'createRecipeController is not implemented yet',
+  });
 };
