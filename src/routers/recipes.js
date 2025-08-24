@@ -1,50 +1,24 @@
 import { Router } from 'express';
-//import { upload } from '../middlewares/multer.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-//import { validateBody } from '../middlewares/validateBody.js';
-//import { createRecipeSchema } from '../validation/recipes.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import {
-  //createRecipeController,
-  //getAllRecipesController,
+  createRecipeController,
   getRecipeByIdController,
   getUserOwnRecipesController,
   addFavorite,
   removeFavorite,
-  getFavoriteRecipes,
+  getFavoriteRecipes
 } from '../controllers/recipes.js';
-import { isValidId } from "../middlewares/isValidId.js";
-//import { parsePaginationParams } from "../utils/parsePaginationParams.js";
-//import { parseSortParams } from "../utils/parseSortParams.js";
+import { isValidId } from '../middlewares/isValidId.js';
 
 const router = Router();
 
-router.use(authenticate);
-
-//router.get('/', ctrlWrapper(getAllRecipesController));
-//router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
-router.get('/own', authenticate, ctrlWrapper(getUserOwnRecipesController));
-//router.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController),);
 router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
-
-router.get(
-  '/favorites',
-  authenticate,
-  ctrlWrapper(getFavoriteRecipes),
-);
-
-router.post(
-  '/favorites/:recipeId',
-  authenticate,
-  isValidId,
-  addFavorite,
-);
-
-router.delete(
-  '/favorites/:recipeId',
-  authenticate,
-  isValidId,
-  removeFavorite,
+router.post('/', authenticate, ctrlWrapper(createRecipeController));
+router.get('/own', authenticate, ctrlWrapper(getUserOwnRecipesController));
+router.post('/favorites/:recipeId', isValidId, ctrlWrapper(addFavorite));
+router.delete('/favorites/:recipeId', isValidId, ctrlWrapper(removeFavorite));
+router.get('/favorites', ctrlWrapper(getFavoriteRecipes),
 );
 
 export default router;
