@@ -13,9 +13,9 @@ import {
   removeFavorite,
   getFavoriteRecipes,
 } from '../controllers/recipes.js';
-import { isValidId } from "../middlewares/isValidId.js";
-import { parsePaginationParams } from "../utils/parsePaginationParams.js";
-import { parseSortParams } from "../utils/parseSortParams.js";
+import { isValidId } from '../middlewares/isValidId.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 
 const router = Router();
 
@@ -49,5 +49,17 @@ router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
 //   isValidId,
 //   removeFavorite,
 // );
+
+// ===== FAVORITES =====
+router.get(
+  '/favorites',
+  parsePaginationParams,
+  parseSortParams,
+  ctrlWrapper(getFavoriteRecipes),
+);
+
+router.post('/favorites/:recipeId', isValidId, ctrlWrapper(addFavorite));
+
+router.delete('/favorites/:recipeId', isValidId, ctrlWrapper(removeFavorite));
 
 export default router;
