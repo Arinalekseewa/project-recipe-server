@@ -77,68 +77,65 @@ export const getUserOwnRecipesService = async ({
   return { items, ...pagination };
 };
 
-
-
-export const getRecipeById = (id) => {
-export function getRecipeById(id) {
-  return RecipesCollection.findById(id);
-}
-
-export const addToFavorites = async (userId, recipeId) => {
-  const user = await UsersCollection.findById(userId);
-
-  if (!user) {
-    throw new Error('User not found');
+  export function getRecipeById(id) {
+    return RecipesCollection.findById(id);
   }
 
-  // Перевіряємо чи рецепт існує
-  const recipe = await RecipesCollection.findById(recipeId);
-  if (!recipe) {
-    throw new Error('Recipe not found');
-  }
+  export const addToFavorites = async (userId, recipeId) => {
+    const user = await UsersCollection.findById(userId);
 
-  // Перевіряємо чи рецепт вже в улюблених
-  if (user.favorites.includes(recipeId)) {
-    throw new Error('Recipe already in favorites');
-  }
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-  user.favorites.push(recipeId);
-  await user.save();
+    // Перевіряємо чи рецепт існує
+    const recipe = await RecipesCollection.findById(recipeId);
+    if (!recipe) {
+      throw new Error('Recipe not found');
+    }
 
-  return recipe;
-};
+    // Перевіряємо чи рецепт вже в улюблених
+    if (user.favorites.includes(recipeId)) {
+      throw new Error('Recipe already in favorites');
+    }
 
-export const removeFromFavorites = async (userId, recipeId) => {
-  const user = await UsersCollection.findById(userId);
+    user.favorites.push(recipeId);
+    await user.save();
 
-  if (!user) {
-    throw new Error('User not found');
-  }
+    return recipe;
+  };
 
-  // Перевіряємо чи рецепт є в улюблених
-  if (!user.favorites.includes(recipeId)) {
-    throw new Error('Recipe not in favorites');
-  }
+  export const removeFromFavorites = async (userId, recipeId) => {
+    const user = await UsersCollection.findById(userId);
 
-  user.favorites = user.favorites.filter((id) => id.toString() !== recipeId);
-  await user.save();
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-  return { message: 'Recipe removed from favorites' };
-};
+    // Перевіряємо чи рецепт є в улюблених
+    if (!user.favorites.includes(recipeId)) {
+      throw new Error('Recipe not in favorites');
+    }
 
-export const getFavorites = async (userId, paginationParams) => {
-  const user = await UsersCollection.findById(userId).populate({
-    path: 'favorites',
-    options: {
-      limit: paginationParams.limit,
-      skip: paginationParams.skip,
-      sort: paginationParams.sort,
-    },
-  });
+    user.favorites = user.favorites.filter((id) => id.toString() !== recipeId);
+    await user.save();
 
-  if (!user) {
-    throw new Error('User not found');
-  }
+    return { message: 'Recipe removed from favorites' };
+  };
 
-  return user.favorites;
-};
+  export const getFavorites = async (userId, paginationParams) => {
+    const user = await UsersCollection.findById(userId).populate({
+      path: 'favorites',
+      options: {
+        limit: paginationParams.limit,
+        skip: paginationParams.skip,
+        sort: paginationParams.sort,
+      },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user.favorites;
+  };

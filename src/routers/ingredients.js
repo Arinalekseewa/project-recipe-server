@@ -4,7 +4,6 @@ import { ctrlWrapper } from "../utils/ctrlWrapper.js";
 
 const router = express.Router();
 
-
 router.get('/', ctrlWrapper(getAllIngredients));
 
 export default router;

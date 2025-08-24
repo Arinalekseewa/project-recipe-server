@@ -18,7 +18,7 @@ tags:
 servers:
   - url: https://testeorama.onrender.com
 paths:
-    /api/auth/register:
+  /api/auth/register:
     post:
       summary: Register a new user
       tags:
@@ -52,7 +52,6 @@ paths:
         '401':
           $ref: '../src/swagger/responses/401.yaml'
 
-  /api/auth/logout:
     post:
       summary: Logout current user
       tags:
@@ -64,6 +63,7 @@ paths:
           description: User successfully logged out
         '401':
           $ref: '../src/swagger/responses/401.yaml'
+  /api/auth/logout:
 
   /api/users/me:
     get:
