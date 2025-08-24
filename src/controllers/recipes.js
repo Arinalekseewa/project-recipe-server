@@ -3,17 +3,23 @@ import {
   createRecipe,
   getUserOwnRecipesService,
   getRecipeById,
-  //getUserOwnRecipesService,
 } from '../services/recipes.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { RecipesCollection } from '../db/models/recipes.js';
 
 export const createRecipeController = async (req, res, next) => {
   try {
     const ownerId = req.user?.id ?? req.user?._id;
     if (!ownerId) return next(createHttpError(401, 'Unauthorized'));
 
-    if (!req.body?.title || typeof req.body.title !== 'string' || req.body.title.trim().length < 2) {
-      return next(createHttpError(400, 'Field "title" is required (min 2 chars)'));
+    if (
+      !req.body?.title ||
+      typeof req.body.title !== 'string' ||
+      req.body.title.trim().length < 2
+    ) {
+      return next(
+        createHttpError(400, 'Field "title" is required (min 2 chars)'),
+      );
     }
 
     const recipe = await createRecipe({ ...req.body, owner: ownerId });
@@ -60,37 +66,100 @@ export async function getRecipeByIdController(req, res) {
     message: `Successfully found recipe!`,
     data: recipe,
   });
-};
+}
 
-export const addFavorite = ctrlWrapper(async (req, res) => {
-  const { id: userId } = req.user;
-  const { recipeId } = req.params;
+// export const addFavorite = ctrlWrapper(async (req, res) => {
+//   const { id: userId } = req.user;
+//   const { recipeId } = req.params;
 
-  const recipe = await addToFavorites(userId, recipeId);
+//   const recipe = await addToFavorites(userId, recipeId);
 
-  res.status(201).json({
-    message: 'Recipe added to favorites',
-    recipe,
-  });
-});
+//   res.status(201).json({
+//     message: 'Recipe added to favorites',
+//     recipe,
+//   });
+// });
 
-export const removeFavorite = ctrlWrapper(async (req, res) => {
-  const { id: userId } = req.user;
-  const { recipeId } = req.params;
+// export const removeFavorite = ctrlWrapper(async (req, res) => {
+//   const { id: userId } = req.user;
+//   const { recipeId } = req.params;
 
-  const result = await removeFromFavorites(userId, recipeId);
+//   const result = await removeFromFavorites(userId, recipeId);
 
-  res.json(result);
-});
+//   res.json(result);
+// });
 
-export const getFavoriteRecipes = ctrlWrapper(async (req, res) => {
-  const { id: userId } = req.user;
-  const paginationParams = req.pagination;
+// export const getFavoriteRecipes = ctrlWrapper(async (req, res) => {
+//   const { id: userId } = req.user;
+//   const paginationParams = req.pagination;
 
-  const favorites = await getFavorites(userId, paginationParams);
+//   const favorites = await getFavorites(userId, paginationParams);
+
+//   res.json({
+//     favorites,
+//     pagination: req.pagination,
+//   });
+// });
+
+// GET /recipes/favorites
+export const getFavoriteRecipes = async (req, res) => {
+  const { page, limit, sortBy, sortOrder } = req.pagination;
+  const user = req.user;
+
+  const favorites = await RecipesCollection.find({
+    _id: { $in: user.favorites },
+  })
+    .sort({ [sortBy]: sortOrder })
+    .skip((page - 1) * limit)
+    .limit(limit);
 
   res.json({
-    favorites,
-    pagination: req.pagination,
+    status: 200,
+    message: 'Favorites fetched successfully',
+    data: favorites,
   });
-});
+};
+
+// POST /recipes/favorites/:recipeId
+export const addFavorite = async (req, res) => {
+  const { recipeId } = req.params;
+  const user = req.user;
+
+  if (user.favorites.includes(recipeId)) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Recipe already in favorites',
+    });
+  }
+
+  user.favorites.push(recipeId);
+  await user.save();
+
+  res.status(201).json({
+    status: 201,
+    message: 'Recipe added to favorites',
+    data: user.favorites,
+  });
+};
+
+// DELETE /recipes/favorites/:recipeId
+export const removeFavorite = async (req, res) => {
+  const { recipeId } = req.params;
+  const user = req.user;
+
+  if (!user.favorites.includes(recipeId)) {
+    return res.status(404).json({
+      status: 404,
+      message: 'Recipe not found in favorites',
+    });
+  }
+
+  user.favorites = user.favorites.filter((id) => id.toString() !== recipeId);
+  await user.save();
+
+  res.json({
+    status: 200,
+    message: 'Recipe removed from favorites',
+    data: user.favorites,
+  });
+};
