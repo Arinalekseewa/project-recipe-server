@@ -8,7 +8,7 @@ requestBody:
   content:
     application/json:
       schema:
-        $ref: '../../../schemas/recipeInput.yaml'
+        $ref: '../../../components/schemas/recipeInput.yaml'
 responses:
   '201':
     $ref: '../../components/responses/201.yaml'

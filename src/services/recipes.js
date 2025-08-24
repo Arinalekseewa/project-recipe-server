@@ -83,7 +83,8 @@ export function getRecipeById(id) {
 }
 
   return recipes;
-};
+  
+
 export function getRecipeById(id) {
   return RecipesCollection.findById(id);
 }

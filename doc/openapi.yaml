@@ -15,11 +15,13 @@ tags:
     description: Recipe categories
   - name: Ingredients
     description: Recipe ingredients
+    name: Recipes
+    description: Operations related to recipes
 servers:
   - url: https://testeorama.onrender.com
 paths:
     /api/auth/register:
-    post:
+    post: 
       summary: Register a new user
       tags:
         - Auth
