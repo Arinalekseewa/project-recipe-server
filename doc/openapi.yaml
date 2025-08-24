@@ -67,20 +67,7 @@ paths:
 
   /api/users/me:
     get:
-      summary: Get current user info
-      tags:
-        - Users
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Current user information
-          content:
-            application/json:
-              schema:
-                $ref: '../src/swagger/schemas/user.yaml'
-        '401':
-          $ref: '../src/swagger/responses/401.yaml'
+      $ref: ../src/swagger/paths/user/get.yaml
 
   /api/categories:
     get:

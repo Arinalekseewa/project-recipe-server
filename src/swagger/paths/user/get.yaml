@@ -1,0 +1,14 @@
+summary: Get current user info
+tags:
+  - Users
+security:
+  - bearerAuth: []
+responses:
+  '200':
+    description: Current user information
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/user.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'
