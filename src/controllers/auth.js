@@ -89,13 +89,3 @@ const setupSession = (res, session) => {
     expires: new Date(Date.now() + ONE_DAY),
   });
 };
-
-export const getCurrentUserController = async (req, res) => {
-  const { _id, name, email, avatar, followers, following } = req.user;
-
-  res.json({
-    status: 200,
-    message: 'Current user info',
-    data: { _id, name, email, avatar, followers, following },
-  });
-};
