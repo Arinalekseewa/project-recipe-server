@@ -64,6 +64,17 @@ paths:
         '401':
           $ref: '../src/swagger/responses/401.yaml'
   /api/auth/logout:
+    $ref: "../swagger/path/user/auth/logoutUser/post.yaml" 
+    post: 
+      summary: Logout current user 
+      tags: 
+        - Auth 
+      security: 
+        - bearerAuth: [] 
+      responses: 
+          '204': 
+            description: User successfully logged out 
+          '401': $ref: '../src/swagger/components/responses/401.yaml'
 
   /api/users/me:
     get:
