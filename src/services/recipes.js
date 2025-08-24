@@ -77,8 +77,7 @@ export const getUserOwnRecipesService = async ({
   return { items, ...pagination };
 };
 
-  return recipes;
-};
+
 
 export const getRecipeById = (id) => {
 export function getRecipeById(id) {

@@ -1,48 +1,15 @@
 // ******* ================== Imports ================== ********
 
-import { getUserOwnRecipesService } from '../services/recipes.js';
-import createHttpError from 'http-errors';
-import { getRecipeById } from '../services/recipes.js';
-
-// ********* ================== Controllers ================== *********//
-
-// ------------------- Yaroslav: Get users own recipes ---------------------
-
 import createHttpError from 'http-errors';
 import {
   createRecipe,
   getUserOwnRecipesService,
   getRecipeById,
 } from '../services/recipes.js';
-import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { RecipesCollection } from '../db/models/recipes.js';
 
-export const createRecipeController = async (req, res, next) => {
-  try {
-    const ownerId = req.user?.id ?? req.user?._id;
-    if (!ownerId) return next(createHttpError(401, 'Unauthorized'));
-
-    if (
-      !req.body?.title ||
-      typeof req.body.title !== 'string' ||
-      req.body.title.trim().length < 2
-    ) {
-      return next(
-        createHttpError(400, 'Field "title" is required (min 2 chars)'),
-      );
-    }
-
-    const recipe = await createRecipe({ ...req.body, owner: ownerId });
-
-    res.status(201).json({
-      status: 201,
-      message: 'Recipe created',
-      data: recipe,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+// ********* ================== Controllers ================== *********//
+// ------------------- Yaroslav: Get users own recipes ---------------------
 
 export const getUserOwnRecipesController = async (req, res, next) => {
   try {
@@ -64,6 +31,31 @@ export const getUserOwnRecipesController = async (req, res, next) => {
   }
 };
 
+// ------------------- Aleksandr: Create own recipes ---------------------
+
+export const createRecipeController = async (req, res, next) => {
+  const ownerId = req.user?.id ?? req.user?._id;
+  if (!ownerId) return next(createHttpError(401, 'Unauthorized'));
+
+  if (
+    !req.body?.title ||
+    typeof req.body.title !== 'string' ||
+    req.body.title.trim().length < 2
+  ) {
+    return next(
+      createHttpError(400, 'Field "title" is required (min 2 chars)'),
+    );
+  }
+
+  const recipe = await createRecipe({ ...req.body, owner: ownerId });
+
+  res.status(201).json({
+    status: 201,
+    message: 'Recipe created',
+    data: recipe,
+  });
+};
+
 // ---------------- Ivan: Get recipe by ID --------------------
 
 export async function getRecipeByIdController(req, res) {
@@ -78,32 +70,10 @@ export async function getRecipeByIdController(req, res) {
     message: `Successfully found recipe!`,
     data: recipe,
   });
-}
-
-// --- TODO: Create recipe controller (Потрібно виконати...) ---
-
-export const createRecipeController = (req, res) => {
-  res.status(501).json({
-    status: 501,
-    message: 'createRecipeController is not implemented yet',
-  };
-export async function getRecipeByIdController(req, res) {
-  const recipe = await getRecipeById(req.params.id);
-
-  if (recipe === null) {
-    throw new createHttpError.NotFound('Recipe not found');
-  };
-
-  res.json({
-    status: 200,
-    message: `Successfully found recipe!`,
-    data: recipe,
-  });
 };
 
+// ---------------- Vitalii: Favourites recipes --------------------
 
-
-// GET /recipes/favorites
 export const getFavoriteRecipes = async (req, res) => {
   const { page, limit, sortBy, sortOrder } = req.pagination;
   const user = req.user;

@@ -1,3 +1,5 @@
+// ******* ================== Imports ================== ********
+
 import { registerUser } from '../services/auth.js';
 import { loginUser } from '../services/auth.js';
 import { ONE_DAY } from '../constants/index.js';
@@ -5,6 +7,9 @@ import { logoutUser } from '../services/auth.js';
 import { refreshUsersSession } from '../services/auth.js';
 import { requestResetToken } from '../services/auth.js';
 import { resetPassword } from '../services/auth.js';
+
+// ******* ================== Controller ================== ********
+// ------------------- Valentyna Melnyk: Register + login ---------------------
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
@@ -34,6 +39,8 @@ export const loginUserController = async (req, res) => {
   });
 };
 
+// ------------------- Maksym: Logout ---------------------
+
 export const logoutUserController = async (req, res) => {
   if (req.cookies.sessionId) {
     await logoutUser(req.cookies.sessionId);
@@ -44,6 +51,8 @@ export const logoutUserController = async (req, res) => {
 
   res.status(204).send();
 };
+
+// ------------------- Arina: Reset email/password + Session ---------------------
 
 export const requestResetEmailController = async (req, res) => {
   await requestResetToken(req.body.email);
@@ -89,6 +98,8 @@ const setupSession = (res, session) => {
     expires: new Date(Date.now() + ONE_DAY),
   });
 };
+
+// ------------------- Andriy: Current user info ---------------------
 
 export const getCurrentUserController = async (req, res) => {
   const { _id, name, email, avatar, followers, following } = req.user;
