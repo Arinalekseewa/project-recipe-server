@@ -52,7 +52,6 @@ paths:
         '401':
           $ref: '../src/swagger/responses/401.yaml'
 
-  /api/auth/logout:
     post:
       summary: Logout current user
       tags:
@@ -64,6 +63,7 @@ paths:
           description: User successfully logged out
         '401':
           $ref: '../src/swagger/responses/401.yaml'
+  /api/auth/logout:
 
   /api/users/me:
     get:
