@@ -18,7 +18,7 @@ tags:
 servers:
   - url: https://testeorama.onrender.com
 paths:
-    /api/auth/register:
+  /api/auth/register:
     post:
       summary: Register a new user
       tags:

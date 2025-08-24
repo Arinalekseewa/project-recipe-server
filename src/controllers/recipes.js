@@ -132,6 +132,5 @@ export const removeFavorite = async (req, res) => {
   res.json({
     status: 200,
     message: 'Recipe removed from favorites',
-    data: user.favorites,
   });
 };
