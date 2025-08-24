@@ -5,21 +5,26 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { getFavorites } from "../services/recipes.js";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 
+
 export const getUserOwnRecipesController = async (req, res, next) => {
-  try {
-    const userId = req.user._id;
-    const { page = 1, limit = 10 } = req.query;
+  const userId = req.user._id;
+  const { page = 1, limit = 10 } = req.query;
 
-    const recipes = await getUserOwnRecipesService({ userId, page, limit });
+  const recipes = await getUserOwnRecipesService({ userId, page, limit });
 
-    res.status(200).json({
-      status: 200,
-      message: "Successfully fetched user's own recipes",
-      data: recipes,
+  if (!recipes || recipes.length === 0) {
+    return res.status(404).json({
+      status: 404,
+      message: "No recipes found for this user",
+      data: [],
     });
-  } catch (error) {
-    next(error);
   }
+
+  res.status(200).json({
+    status: 200,
+    message: "Successfully fetched user's own recipes",
+    data: recipes,
+  });
 };
 
 export async function getRecipeByIdController(req, res) {
