@@ -1,4 +1,4 @@
-/users/logout:
+/auth/logout:
   post:
     summary: Logout user
     description: |
