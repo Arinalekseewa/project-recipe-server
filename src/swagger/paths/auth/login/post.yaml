@@ -1,0 +1,46 @@
+tags:
+  - Auth
+summary: Log in a user
+operationId: loginUser
+description: Authenticate user
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            type: string
+            example: valya@gmail.com
+          password:
+            type: string
+            format: password
+            example: GoIt2025
+responses:
+  '200':
+    description: User logged in
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully logged in!
+            data:
+              type: object
+              $ref: '../../components/schemas/userLogin.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'
