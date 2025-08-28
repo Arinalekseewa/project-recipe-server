@@ -111,27 +111,76 @@ export async function getRecipeByIdController(req, res) {
     message: `Successfully found recipe!`,
     data: recipe,
   });
+}
+
+// ---------------- Dmitriy: Favourites recipes --------------------
+
+// GET /recipes/favorites
+
+export const getFavoriteRecipes = async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 12,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+    } = req.pagination || {};
+    const user = req.user;
+
+    if (!user || !Array.isArray(user.favorites)) {
+      return res.status(400).json({
+        status: 400,
+        message: 'User not found or favorites missing',
+      });
+    }
+
+    const total = await RecipesCollection.countDocuments({
+      _id: { $in: user.favorites },
+    });
+
+    if (total === 0) {
+      return res.json({
+        status: 200,
+        message: 'No favorite recipes found',
+        data: [],
+        pagination: {
+          total: 0,
+          page,
+          limit,
+          totalPages: 0,
+        },
+      });
+    }
+
+    const favorites = await RecipesCollection.find({
+      _id: { $in: user.favorites },
+    })
+      .sort({ [sortBy]: sortOrder === 'asc' ? 1 : -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    res.json({
+      status: 200,
+      message: 'Favorites fetched successfully',
+      data: favorites,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+    res.status(500).json({
+      status: 500,
+      message: 'Server error fetching favorites',
+      error: error.message,
+    });
+  }
 };
 
 // ---------------- Vitalii: Favourites recipes --------------------
-
-export const getFavoriteRecipes = async (req, res) => {
-  const { page, limit, sortBy, sortOrder } = req.pagination;
-  const user = req.user;
-
-  const favorites = await RecipesCollection.find({
-    _id: { $in: user.favorites },
-  })
-    .sort({ [sortBy]: sortOrder })
-    .skip((page - 1) * limit)
-    .limit(limit);
-
-  res.json({
-    status: 200,
-    message: 'Favorites fetched successfully',
-    data: favorites,
-  });
-};
 
 // POST /recipes/favorites/:recipeId
 export const addFavorite = async (req, res) => {

@@ -1,0 +1,54 @@
+tags:
+  - Recipes
+summary: Delete own recipe by ID
+description: Delete a recipe created by the current authenticated user
+operationId: deleteOwnRecipe
+security:
+  - bearerAuth: []
+parameters:
+  - name: recipeId
+    in: path
+    required: true
+    description: The ID of the recipe to delete
+    schema:
+      type: string
+      example: 64f6a226e1b2c4d7f3b8c1d5
+responses:
+  '200':
+    description: Recipe successfully deleted
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/schemas.yaml#/DeleteRecipeSuccessResponse'
+
+  '401':
+    description: Unauthorized
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/schemas.yaml#/UnauthorizedErrorResponse'
+  '403':
+    description: Forbidden (not the owner of the recipe)
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 403
+            message:
+              type: string
+              example: You are not allowed to delete this recipe
+  '404':
+    description: Recipe not found
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/schemas.yaml#/NotFoundErrorResponse'
+  '500':
+    description: Internal server error
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/schemas.yaml#/ServerErrorResponse'

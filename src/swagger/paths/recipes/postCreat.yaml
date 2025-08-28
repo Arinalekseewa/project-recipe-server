@@ -1,0 +1,26 @@
+tags:
+  - Recipes
+summary: Create recipe
+operationId: createRecipe
+description: 'Create a recipe'
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        $ref: ../../components/schemas/schemas.yaml#/components/schemas/RecipeCreateRequest
+responses:
+  '201':
+    description: Successfully created a recipe
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../../components/schemas/schemas.yaml#/components/schemas/RecipesResponsesCreat'
+  '400':
+    $ref: ../../components/responses/400.yaml
+  '401':
+    $ref: ../../components/responses/401.yaml
+  '500':
+    $ref: ../../components/responses/500.yaml
