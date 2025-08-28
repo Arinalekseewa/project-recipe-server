@@ -15,7 +15,7 @@ parameters:
     name: perPage
     schema:
       type: integer
-      example: 10
+      example: 12
   - in: query
     name: ingredient
     schema:

@@ -97,6 +97,29 @@ export const createRecipeController = async (req, res, next) => {
   });
 };
 
+// ------------------- Arina: Delete own recipes ---------------------
+export const deleteOwnRecipeController = async (req, res, next) => {
+  const { recipeId } = req.params;
+  const userId = req.user.id;
+
+  const recipe = await RecipesCollection.findById(recipeId);
+
+  if (!recipe) {
+    return next(createHttpError(404, 'Recipe not found'));
+  }
+
+  if (recipe.owner.toString() !== userId.toString()) {
+    return next(createHttpError(403, 'You are not allowed to delete this recipe'));
+  }
+
+  await RecipesCollection.findByIdAndDelete(recipeId);
+
+  res.status(200).json({
+    status: 200,
+    message: `Recipe with ID ${recipeId} has been successfully deleted.`,
+  });
+};
+
 // ---------------- Ivan: Get recipe by ID --------------------
 
 export async function getRecipeByIdController(req, res) {

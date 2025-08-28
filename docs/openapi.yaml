@@ -32,9 +32,9 @@ paths:
   /auth/logout:
     post:
       $ref: '../src/swagger/paths/auth/logout.yaml'
-  /users/current:
+  /users/me:
     get:
-      $ref: '../src/swagger/paths/users/current.yaml'
+      $ref: '../src/swagger/paths/users/me.yaml'
   /categories:
     get:
       $ref: '../src/swagger/paths/categories/getCategories.yaml'
