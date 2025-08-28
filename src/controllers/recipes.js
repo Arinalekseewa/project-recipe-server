@@ -31,6 +31,47 @@ export const getUserOwnRecipesController = async (req, res, next) => {
   }
 };
 
+// ------------------- Arina: Get recipes ---------------------
+
+export const getRecipesController = async (req, res, next) => {
+  const {
+    category,
+    ingredient,
+    query,
+    page = 1,
+    limit = 10,
+  } = req.query;
+
+  const filter = {};
+
+  if (category) {
+    filter.category = category;
+  }
+
+  if (ingredient) {
+    filter.ingredients = { $elemMatch: { $regex: ingredient, $options: "i" } };
+  }
+
+  if (query) {
+    filter.title = { $regex: query, $options: "i" };
+  }
+
+  const skip = (page - 1) * limit;
+
+  const [recipes, total] = await Promise.all([
+    RecipesCollection.find(filter).skip(skip).limit(Number(limit)),
+    RecipesCollection.countDocuments(filter),
+  ]);
+
+  res.json({
+    page: Number(page),
+    limit: Number(limit),
+    total,
+    totalPages: Math.ceil(total / limit),
+    recipes,
+  });
+};
+
 // ------------------- Aleksandr: Create own recipes ---------------------
 
 export const createRecipeController = async (req, res, next) => {

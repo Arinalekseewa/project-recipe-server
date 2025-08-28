@@ -7,12 +7,14 @@ import {
   getUserOwnRecipesController,
   addFavorite,
   removeFavorite,
-  getFavoriteRecipes
+  getFavoriteRecipes,
+  getRecipesController
 } from '../controllers/recipes.js';
 import { isValidId } from '../middlewares/isValidId.js';
 
 const router = Router();
 
+router.get("/search", isValidId, ctrlWrapper(getRecipesController));
 router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
 router.post('/', authenticate, ctrlWrapper(createRecipeController));
 router.get('/own', authenticate, ctrlWrapper(getUserOwnRecipesController));
