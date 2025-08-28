@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://tasteorama.onrender.com/api"
+      "url": "https://tasteorama.onrender.com"
     }
   ],
   "tags": [
@@ -160,7 +160,7 @@
         }
       }
     },
-    "/users/current": {
+    "/users/me": {
       "get": {
         "tags": [
           "Users"
@@ -319,7 +319,7 @@
             "name": "perPage",
             "schema": {
               "type": "integer",
-              "example": 10
+              "example": 12
             }
           },
           {
