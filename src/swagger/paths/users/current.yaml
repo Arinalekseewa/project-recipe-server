@@ -1,0 +1,16 @@
+tags:
+  - Users
+summary: Get current user
+operationId: getCurrentUser
+description: 'Retrieve information about current user. Requires authentication.'
+security:
+  - bearerAuth: []
+responses:
+  200:
+    description: Successfully found user
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/schemas.yaml#/CurrentUserResponse'
+  401:
+    $ref: ../../components/responses/401.yaml

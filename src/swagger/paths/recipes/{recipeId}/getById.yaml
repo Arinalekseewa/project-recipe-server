@@ -1,0 +1,92 @@
+tags:
+  - Recipes
+summary: Get recipe by ID
+operationId: getRecipe
+description: 'Retrieve a specific recipe by its unique ID.'
+security: []
+parameters:
+  - in: path
+    name: recipeId
+    required: true
+    schema:
+      type: string
+      example: '65ca67e7ae7f10c88b598384'
+    description: Unique recipe identifier
+responses:
+  200:
+    description: Recipe found successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found recipe with id 6462a8f74c3d0ddd28897fcd!
+            data:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: '6462a8f74c3d0ddd28897fcd'
+                title:
+                  type: string
+                  example: Borscht
+                category:
+                  type: string
+                  example: Soups
+                owner:
+                  type: string
+                  example: userId
+                area:
+                  type: string
+                  example: Ukrainian cuisine
+                instructions:
+                  type: string
+                  example: Boil, add...
+                description:
+                  type: string
+                  example: Traditional Ukrainian borscht
+                thumb:
+                  type: string
+                  example: http://example.com/image.jpg
+                time:
+                  type: string
+                  example: 60 min
+                ingredients:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                            example: ingredientId
+                          name:
+                            type: string
+                            example: Beetroot
+                      measure:
+                        type: string
+                        example: 200 g
+  404:
+    description: Recipe not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Recipe not found

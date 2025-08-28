@@ -72,7 +72,7 @@ export async function getRecipeByIdController(req, res) {
   });
 }
 
-// ---------------- Vitalii: Favourites recipes --------------------
+// ---------------- Dmitriy: Favourites recipes --------------------
 
 // GET /recipes/favorites
 
@@ -80,7 +80,7 @@ export const getFavoriteRecipes = async (req, res) => {
   try {
     const {
       page = 1,
-      limit = 10,
+      limit = 12,
       sortBy = 'createdAt',
       sortOrder = 'desc',
     } = req.pagination || {};
@@ -138,6 +138,8 @@ export const getFavoriteRecipes = async (req, res) => {
     });
   }
 };
+
+// ---------------- Vitalii: Favourites recipes --------------------
 
 // POST /recipes/favorites/:recipeId
 export const addFavorite = async (req, res) => {
