@@ -23,6 +23,7 @@ export const registerUserController = async (req, res) => {
 
 export const loginUserController = async (req, res, next) => {
   try {
+    console.log("Request body:", req.body); // <--- тут бачимо, що приходить
     const session = await loginUser(req.body);
 
     res.cookie('refreshToken', session.refreshToken, {
@@ -39,10 +40,11 @@ export const loginUserController = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.error("Login error:", error); // <-- тут лог
+    console.error("Login error:", error);
     next(error);
   }
 };
+
 
 
 // ------------------- Maksym: Logout ---------------------
