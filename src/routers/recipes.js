@@ -15,7 +15,7 @@ import { isValidId } from '../middlewares/isValidId.js';
 
 const router = Router();
 
-router.get('/' , isValidId, ctrlWrapper(getRecipesController));
+router.get('/', ctrlWrapper(getRecipesController));
 router.get('/own', authenticate, ctrlWrapper(getUserOwnRecipesController));
 router.delete('/:recipeId', authenticate, isValidId, ctrlWrapper(deleteOwnRecipeController));
 router.get('/favorites', authenticate, ctrlWrapper(getFavoriteRecipes),);
