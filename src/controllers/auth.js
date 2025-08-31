@@ -21,23 +21,29 @@ export const registerUserController = async (req, res) => {
   });
 };
 
-export const loginUserController = async (req, res) => {
-  const session = await loginUser(req.body);
+export const loginUserController = async (req, res, next) => {
+  try {
+    const session = await loginUser(req.body);
 
-  res.cookie('refreshToken', session.refreshToken, {
-    httpOnly: true,
-    expires: new Date(Date.now() + ONE_DAY),
-  });
+    res.cookie('refreshToken', session.refreshToken, {
+      httpOnly: true,
+      expires: new Date(Date.now() + ONE_DAY),
+    });
 
-  res.json({
-    status: 200,
-    message: 'User logged in successfully',
-    data: {
-      accessToken: session.accessToken,
-      user: session.user,
-    },
-  });
+    res.json({
+      status: 200,
+      message: 'User logged in successfully',
+      data: {
+        accessToken: session.accessToken,
+        user: session.user,
+      },
+    });
+  } catch (error) {
+    console.error("Login error:", error); // <-- тут лог
+    next(error);
+  }
 };
+
 
 // ------------------- Maksym: Logout ---------------------
 
