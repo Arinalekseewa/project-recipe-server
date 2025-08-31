@@ -1,144 +1,79 @@
 openapi: 3.1.0
 info:
+  title: Headliner API
   version: 1.0.0
-  title: Recipes App
+  description: This API provides a complete solution for managing a recipe-sharing platform. It allows users to browse, search, and filter recipes, as well as register, log in, and manage their profiles and favorite recipes. The API supports both public and private routes with authentication and authorization mechanisms.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description: This is a documentation of recipes app
+
+servers:
+  - url: https://tasteorama.onrender.com
+
 tags:
   - name: Auth
-    description: Operations related to authentication
+    description: User authentication
   - name: Users
-    description: Operations related to users
+    description: User information
   - name: Categories
     description: Recipe categories
   - name: Ingredients
     description: Recipe ingredients
-servers:
-  - url: https://testeorama.onrender.com
+  - name: Recipes
+    description: Recipe information
+
 paths:
-  /api/auth/register:
+  /auth/register:
     post:
-      summary: Register a new user
-      tags:
-        - Auth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '../src/swagger/schemas/userRegister.yaml'
-      responses:
-        '201':
-          description: User successfully registered
-        '400':
-          $ref: '../src/swagger/responses/400.yaml'
-
-  /api/auth/login:
+      $ref: '../src/swagger/paths/auth/register.yaml'
+  /auth/login:
     post:
-      summary: User login
-      tags:
-        - Auth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '../src/swagger/schemas/userLogin.yaml'
-      responses:
-        '200':
-          description: User successfully logged in
-        '401':
-          $ref: '../src/swagger/responses/401.yaml'
-
+      $ref: '../src/swagger/paths/auth/login.yaml'
+  /auth/logout:
     post:
-      summary: Logout current user
-      tags:
-        - Auth
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: User successfully logged out
-        '401':
-          $ref: '../src/swagger/responses/401.yaml'
-  /api/auth/logout:
-
-  /api/users/me:
+      $ref: '../src/swagger/paths/auth/logout.yaml'
+  /users/me:
     get:
-      summary: Get current user info
-      tags:
-        - Users
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Current user information
-          content:
-            application/json:
-              schema:
-                $ref: '../src/swagger/schemas/user.yaml'
-        '401':
-          $ref: '../src/swagger/responses/401.yaml'
-
-  /api/categories:
+      $ref: '../src/swagger/paths/users/me.yaml'
+  /categories:
     get:
-      summary: Get list of recipe categories
-      tags:
-        - Categories
-      responses:
-        '200':
-          description: List of categories
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '../src/swagger/schemas/category.yaml'
-
-  /api/ingredients:
+      $ref: '../src/swagger/paths/categories/getCategories.yaml'
+  /ingredients:
     get:
-      summary: Get list of ingredients
-      tags:
-        - Ingredients
-      responses:
-        '200':
-          description: List of ingredients
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '../src/swagger/schemas/ingredient.yaml'
-  api/recipes:
+      $ref: '../src/swagger/paths/ingredients/getIngredients.yaml'
+  /recipes:
+    post:
+      $ref: '../src/swagger/paths/recipes/postCreat.yaml'
     get:
-      $ref: ../src/swagger/paths/recipes/get.yaml
+      $ref: '../src/swagger/paths/recipes/getAll.yaml'
+  /recipes/own:
+    get:
+      $ref: '../src/swagger/paths/recipes/getOwn.yaml'
+  /recipes/favorites/{recipeId}:
+    post:
+      $ref: '../src/swagger/paths/recipes/{recipeId}/postFav.yaml'
+    delete:
+      $ref: '../src/swagger/paths/recipes/{recipeId}/deleteFav.yaml'
+  /recipes/favorites:
+    get:
+      $ref: '../src/swagger/paths/recipes/{recipeId}/getFav.yaml'
   /recipes/{recipeId}:
     get:
-      $ref: ../src/swagger/paths/recipes/{recipeId}/get.yaml
-  /user/recipes:
-    get:
-      $ref: ../src/swagger/paths/user/recipes/get.yaml
-    post:
-      $ref: ../src/swagger/paths/user/recipes/post.yaml
-  /user/favorites:
-    get:
-      $ref: ../src/swagger/paths/user/favorites/get.yaml
-  /user/favorites/{recipeId}:
-    post:
-      $ref: ../src/swagger/paths/user/favorites/{recipeId}/post.yaml
+      $ref: '../src/swagger/paths/recipes/{recipeId}/getById.yaml'
     delete:
-      $ref: ../src/swagger/paths/user/favorites/{recipeId}/delete.yaml
+      $ref: '../src/swagger/paths/recipes/deleteRecipe.yaml'
 
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-
   schemas:
-    Recipe:
-      $ref: ../src/swagger/components/schemas/recipes.yaml
-    RecipeInput:
-      $ref: ../src/swagger/components/schemas/recipeInput.yaml
+    LoginRequest:
+      $ref: '../src/swagger/components/schemas/schemas.yaml#/LoginRequest'
+    LoginResponse:
+      $ref: '../src/swagger/components/schemas/schemas.yaml#/LoginResponse'
+    UnauthorizedErrorResponse:
+      $ref: '../src/swagger/components/schemas/schemas.yaml#/UnauthorizedErrorResponse'
+    NotFoundErrorResponse:
+      $ref: '../src/swagger/components/schemas/schemas.yaml#/NotFoundErrorResponse'

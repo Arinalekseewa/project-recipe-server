@@ -1,16 +1,15 @@
-'404':
-  description: Recipes not found
-  content:
-    application/json:
-      schema:
-        type: object
-        required:
-          - status
-          - message
-        properties:
-          status:
-            type: integer
-            example: 404
-          message:
-            type: string
-            example: Recipes not found
+description: Recipes not found
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: Recipes not found

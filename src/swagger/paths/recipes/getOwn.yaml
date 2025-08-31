@@ -1,0 +1,36 @@
+tags:
+  - Recipes
+summary: Get own recipes
+operationId: getOwnRecipes
+description: Returns paginated list of recipes created by the authenticated user
+security:
+  - bearerAuth: []
+parameters:
+  - in: query
+    name: page
+    description: Page number (starting from 1)
+    required: false
+    schema:
+      type: integer
+      minimum: 1
+      default: 1
+  - in: query
+    name: perPage
+    description: Number of items per page
+    required: false
+    schema:
+      type: integer
+      minimum: 1
+      maximum: 100
+      default: 12
+responses:
+  '200':
+    description: Successfully found own recipes
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/schemas.yaml#/components/schemas/RecipesResponsesAll'
+  '401':
+    $ref: ../../components/responses/401.yaml
+  '500':
+    $ref: ../../components/responses/500.yaml

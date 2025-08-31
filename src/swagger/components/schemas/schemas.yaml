@@ -1,0 +1,570 @@
+RegisterRequest:
+  type: object
+  required:
+    - name
+    - email
+    - password
+  properties:
+    name:
+      type: string
+      minLength: 2
+      maxLength: 100
+      example: 'Kateryna'
+      description: User's full name (2-100 characters)
+    email:
+      type: string
+      format: email
+      example: 'kateryna@example.com'
+      description: Valid email address
+    password:
+      type: string
+      format: password
+      minLength: 8
+      maxLength: 128
+      example: 'Password123!'
+      description: Password (8–128 characters; must include uppercase, lowercase, number, special character)
+
+LoginRequest:
+  type: object
+  required:
+    - email
+    - password
+  properties:
+    email:
+      type: string
+      format: email
+      example: serhii@example.com
+      description: Valid email address
+    password:
+      type: string
+      minLength: 8
+      maxLength: 128
+      example: Qwerty123!
+      description: Password (8–128 characters)
+
+LoginResponse:
+  type: object
+  required:
+    - status
+    - message
+    - data
+  properties:
+    status:
+      type: integer
+      example: 200
+    message:
+      type: string
+      example: Successfully logged in an user!
+    data:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+          description: JWT access token (expires in 15 minutes)
+          example: AYxGE67cK4Ke/zLQ4BQCbPjtlR7OC3GXasuHOUS1
+
+CurrentUserResponse:
+  type: object
+  required:
+    - status
+    - message
+    - data
+  properties:
+    status:
+      type: integer
+      example: 200
+    message:
+      type: string
+      example: Successfully found user
+    data:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 68625286ccc2346b9b5c58a1
+        name:
+          type: string
+          example: test11
+        email:
+          type: string
+          example: test11@example.com
+        favorites:
+          type: array
+          items:
+            type: string
+            example: 65e4decdd286b30065d54af9
+          example: []
+        createdAt:
+          type: string
+          format: date-time
+          example: 2025-06-30T09:01:58.006Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2025-06-30T09:01:58.006Z
+
+CategoriesResponse:
+  type: object
+  required:
+    - status
+    - message
+    - data
+  properties:
+    status:
+      type: integer
+      example: 200
+    message:
+      type: string
+      example: Successfully found categories
+    data:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: 6462a6cd4c3d0ddd28897f8a
+          name:
+            type: string
+            example: Seafood
+
+IngredientsResponse:
+  type: object
+  required:
+    - status
+    - message
+    - data
+  properties:
+    status:
+      type: integer
+      example: 200
+    message:
+      type: string
+      example: Successfully found ingredients
+    data:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: 665c61ff89123b001c5c5678
+          name:
+            type: string
+            example: Egg
+          desc:
+            type: string
+            example: A chicken egg
+          img:
+            type: string
+            format: uri
+            example: http://example.com/egg.jpg
+
+DeleteRecipeSuccessResponse:
+  type: object
+  required:
+    - status
+    - message
+  properties:
+    status:
+      type: integer
+      example: 200
+    message:
+      type: string
+      example: Recipe with ID 65d65abfa7e45a0012fcd087 has been successfully deleted.
+
+UnauthorizedErrorResponse:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 401
+    message:
+      type: string
+      example: UnauthorizedError
+    data:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unauthorized
+
+NotFoundErrorResponse:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 404
+    message:
+      type: string
+      example: NotFoundError
+    data:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User not found
+
+RegisterSuccessResponse:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 201
+    message:
+      type: string
+      example: Successfully registered a user!
+    data:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 68625286ccc2346b9b5c58a1
+        name:
+          type: string
+          example: test11
+        email:
+          type: string
+          example: test11@example.com
+        favorites:
+          type: array
+          items:
+            type: string
+          example: []
+        createdAt:
+          type: string
+          format: date-time
+          example: 2025-06-30T09:01:58.006Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2025-06-30T09:01:58.006Z
+
+ServerErrorResponse:
+  type: object
+  properties:
+    status:
+      type: string
+      example: error
+    message:
+      type: string
+      example: Internal server error
+
+ValidationErrorResponse:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 400
+    message:
+      type: string
+      example: BadRequestError
+    data:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Bad request
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: '"name" is not allowed to be empty'
+              path:
+                type: array
+                items:
+                  type: string
+                example: ['name']
+              type:
+                type: string
+                example: string.empty
+              context:
+                type: object
+                properties:
+                  label:
+                    type: string
+                    example: name
+                  value:
+                    type: string
+                    example: ''
+                  key:
+                    type: string
+                    example: name
+
+ConflictErrorResponse:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 409
+      description: HTTP status code
+    message:
+      type: string
+      example: 'Email in use'
+      description: Error message
+# ============================================
+
+components:
+  schemas:
+    Recipes:
+      type: object
+      required:
+        - _id
+        - title
+        - category
+        - owner
+        - instructions
+        - description
+        - time
+        - ingredients
+        - createdAt
+        - updatedAt
+      properties:
+        _id:
+          description: "Recipe's id"
+          type: string
+          example: 685166d165ae9c02b6d54ab9
+        title:
+          description: "Recipe's name"
+          type: string
+          example: 'French Omelette'
+          maxLength: 64
+        category:
+          description: "Recipe's category"
+          type: string
+          example: 'Breakfest'
+        owner:
+          description: 'User`s autorization id'
+          type: string
+          example: 685166d165ae9c02b6d54ab9
+        area:
+          description: 'Country of origin of the recipe'
+          type: string
+          example: 'Ukraine'
+        calories:
+          description: 'Number of calories in the recipe'
+          type: integer
+          example: 150
+          minimum: 1
+          maximum: 10000
+        instructions:
+          description: 'Preparation Steps'
+          type: string
+          example: '1. Crack the eggs into a small bowl. Add a pinch of salt and a bit of black pepper. Whisk the eggs with a fork or whisk until smooth and slightly foamy...'
+          maxLength: 1200
+        description:
+          description: 'About recipe'
+          type: string
+          example: 'A French omelette is known for its soft, tender texture and lack of browning on the outside....'
+          maxLength: 200
+        thumb:
+          description: 'Recipe photo (JPG/PNG), maxSize: 2MB'
+          type: string
+          format: uri
+          example: 'https://res.cloudinary.com/dpghvuuyl/image/upload/image.png'
+        time:
+          description: 'Cooking time'
+          type: string
+          example: '5-7 minutes'
+          minLength: 1
+          maxLength: 360
+        ingredients:
+          type: array
+          description: List of ingredients with measure
+          items:
+            type: object
+            required:
+              - id
+              - measure
+            properties:
+              id:
+                type: string
+                description: 'Ingredients id'
+                example: '685166d165ae9c02b6d54ab9'
+              measure:
+                type: string
+                description: Measurement unit or amount
+                example: '15 g'
+                minLength: 2
+                maxLength: 16
+        createdAt:
+          description: "Contact's createdAt"
+          type: string
+          example: 2025-06-17T13:00:01.774+00:00
+        updatedAt:
+          description: "Contact's updatedAt"
+          type: string
+          example: 2025-06-17T13:00:01.774+00:00
+    RecipeCreateRequest:
+      type: object
+      required:
+        - title
+        - category
+        - owner
+        - instructions
+        - description
+        - time
+        - ingredients
+      properties:
+        _id:
+          description: "Recipe's id"
+          type: string
+          example: 685166d165ae9c02b6d54ab9
+        title:
+          description: "Recipe's name"
+          type: string
+          example: 'French Omelette'
+          maxLength: 64
+        category:
+          description: "Recipe's category"
+          type: string
+          example: 'Breakfest'
+        owner:
+          description: 'User`s autorization id'
+          type: string
+          example: 685166d165ae9c02b6d54ab9
+        area:
+          description: 'Country of origin of the recipe'
+          type: string
+          example: 'Ukraine'
+        calories:
+          description: 'Number of calories in the recipe'
+          type: integer
+          example: 150
+          minimum: 1
+          maximum: 10000
+        instructions:
+          description: 'Preparation Steps'
+          type: string
+          example: '1. Crack the eggs into a small bowl. Add a pinch of salt and a bit of black pepper. Whisk the eggs with a fork or whisk until smooth and slightly foamy...'
+          maxLength: 1200
+        description:
+          description: 'About recipe'
+          type: string
+          example: 'A French omelette is known for its soft, tender texture and lack of browning on the outside....'
+          maxLength: 200
+        thumb:
+          description: 'Recipe photo (JPG/PNG), maxSize: 2MB'
+          type: string
+          format: binary
+          example: 'https://res.cloudinary.com/dpghvuuyl/image/upload/image.png'
+        time:
+          description: 'Cooking time'
+          type: string
+          example: '5-7 minutes'
+          minLength: 1
+          maxLength: 360
+        ingredients:
+          type: array
+          description: List of ingredients with measure
+          items:
+            type: object
+            required:
+              - id
+              - measure
+            properties:
+              id:
+                type: string
+                description: 'Ingredients id'
+                example: '685166d165ae9c02b6d54ab9'
+              measure:
+                type: string
+                description: Measurement unit or amount
+                example: '15 g'
+                minLength: 2
+                maxLength: 16
+
+    RecipesResponsesAddFavorite:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: Recipe added to favorites
+
+    RecipesResponsesCreat:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 201
+        message:
+          type: string
+          example: Successfully created a recipe!
+        data:
+          $ref: '../../components/schemas/schemas.yaml#/components/schemas/Recipes'
+
+    RecipesResponsesAll:
+      type: object
+      required:
+        - status
+        - message
+        - data
+        - page
+        - perPage
+        - totalItems
+        - totalPages
+        - hasNextPage
+        - hasPreviousPage
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: Successfully found recipes!
+        data:
+          type: array
+          items:
+            $ref: '../schemas/schemas.yaml#/components/schemas/Recipes'
+        page:
+          type: integer
+          example: 1
+        perPage:
+          type: integer
+          example: 10
+        totalItems:
+          type: integer
+          example: 100
+        totalPages:
+          type: integer
+          example: 10
+        hasNextPage:
+          type: boolean
+          example: false
+        hasPreviousPage:
+          type: boolean
+          example: true
+
+    BadRequest:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: BadRequestError
+        data:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+              example: 'Bad Request'

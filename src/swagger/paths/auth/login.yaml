@@ -1,0 +1,35 @@
+tags:
+  - Auth
+summary: User login
+operationId: loginUser
+security: []
+description: 'Authenticate user and return access token in response, refreshToken and sessionId as HTTP-only cookies.'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../../components/schemas/schemas.yaml#/LoginRequest'
+
+responses:
+  200:
+    description: Successful login
+    headers:
+      Set-Cookie:
+        description: HTTP-only cookies for refreshToken and sessionId will be set.
+        schema:
+          type: string
+          example: refreshToken=wQgb97oZjc6E2rjGYP8WZj6cFPwSjZV58tV3QVnA; sessionId=j%3A%22684bd6c9c89150805aea7579%22
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/schemas.yaml#/LoginResponse'
+
+  400:
+    $ref: '../../components/responses/400.yaml'
+
+  401:
+    $ref: '../../components/responses/401.yaml'
+
+  404:
+    $ref: '../../components/responses/404.yaml'

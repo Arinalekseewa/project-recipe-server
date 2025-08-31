@@ -16,7 +16,7 @@ export function startServer() {
   app.use(express.json());
   app.use(cookieParser());
   app.use(router);
-  app.use('/uploads', express.static(UPLOAD_DIR));
+  app.use('/api/uploads', express.static(UPLOAD_DIR));
   app.use('/api-docs', swaggerDocs());
 
   app.use(errorHandler);
@@ -27,4 +27,4 @@ export function startServer() {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-}
+};
