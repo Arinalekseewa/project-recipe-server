@@ -34,43 +34,51 @@ export const getUserOwnRecipesController = async (req, res, next) => {
 // ------------------- Arina: Get recipes ---------------------
 
 export const getRecipesController = async (req, res, next) => {
-  const {
-    category,
-    ingredient,
-    query,
-    page = 1,
-    limit = 10,
-  } = req.query;
+  try {
+    console.log("Request query:", req.query); // <-- логування
 
-  const filter = {};
+    const {
+      category,
+      ingredient,
+      query,
+      page = 1,
+      limit = 10,
+    } = req.query;
 
-  if (category) {
-    filter.category = category;
+    const filter = {};
+
+    if (category) {
+      filter.category = category;
+    }
+
+    if (ingredient) {
+      filter.ingredients = { $elemMatch: { $regex: ingredient, $options: "i" } };
+    }
+
+    if (query) {
+      filter.title = { $regex: query, $options: "i" };
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [recipes, total] = await Promise.all([
+      RecipesCollection.find(filter).skip(skip).limit(Number(limit)),
+      RecipesCollection.countDocuments(filter),
+    ]);
+
+    res.json({
+      page: Number(page),
+      limit: Number(limit),
+      total,
+      totalPages: Math.ceil(total / limit),
+      recipes,
+    });
+  } catch (error) {
+    console.error("Error in getRecipesController:", error); // <-- лог помилки
+    next(error);
   }
-
-  if (ingredient) {
-    filter.ingredients = { $elemMatch: { $regex: ingredient, $options: "i" } };
-  }
-
-  if (query) {
-    filter.title = { $regex: query, $options: "i" };
-  }
-
-  const skip = (page - 1) * limit;
-
-  const [recipes, total] = await Promise.all([
-    RecipesCollection.find(filter).skip(skip).limit(Number(limit)),
-    RecipesCollection.countDocuments(filter),
-  ]);
-
-  res.json({
-    page: Number(page),
-    limit: Number(limit),
-    total,
-    totalPages: Math.ceil(total / limit),
-    recipes,
-  });
 };
+
 
 // ------------------- Aleksandr: Create own recipes ---------------------
 
