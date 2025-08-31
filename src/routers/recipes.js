@@ -24,4 +24,5 @@ router.post('/add-recipe', authenticate, ctrlWrapper(createRecipeController));
 router.post('/favorites/:recipeId', authenticate, isValidId, ctrlWrapper(addFavorite));
 router.delete('/favorites/:recipeId', authenticate, isValidId, ctrlWrapper(removeFavorite));
 
+
 export default router;
