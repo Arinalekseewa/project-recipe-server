@@ -16,7 +16,7 @@ export function startServer() {
   app.use(express.json());
   app.use(cookieParser());
   app.use(router);
-  app.use('/api/uploads', express.static(UPLOAD_DIR));
+  app.use('/uploads', express.static(UPLOAD_DIR));
   app.use('/api-docs', swaggerDocs());
 
   app.use(errorHandler);
