@@ -30,17 +30,24 @@ export const getAllRecipes = async ({
   sortOrder = SORT_ORDER.DESC,
   query,
   category,
+  ingredient,
 } = {}) => {
   const skip = (page - 1) * limit;
 
   const filter = {};
+
   if (query) {
     filter.$or = [
       { title: { $regex: query, $options: 'i' } },
       { description: { $regex: query, $options: 'i' } },
     ];
   }
+
   if (category) filter.category = category;
+
+  if (ingredient) {
+    filter.ingredients = { $in: [ingredient] };
+  }
 
   const sort =
     sortOrder === SORT_ORDER.ASC ? { [sortBy]: 1 } : { [sortBy]: -1 };
@@ -53,6 +60,7 @@ export const getAllRecipes = async ({
   const pagination = calculatePaginationData({ totalItems, page, limit });
   return { items, ...pagination };
 };
+
 
 export const getUserOwnRecipesService = async ({
   userId,
