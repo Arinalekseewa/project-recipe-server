@@ -45,9 +45,7 @@ export const getAllRecipes = async ({
 
   if (category) filter.category = category;
 
-  if (ingredient) {
-    filter.ingredients = { $in: [ingredient] };
-  }
+  if (ingredient) filter.ingredient = ingredient;
 
   const sort =
     sortOrder === SORT_ORDER.ASC ? { [sortBy]: 1 } : { [sortBy]: -1 };
