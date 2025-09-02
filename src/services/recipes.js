@@ -45,7 +45,11 @@ export const getAllRecipes = async ({
 
   if (category) filter.category = category;
 
-  if (ingredient) filter.ingredient = ingredient;
+  if (ingredient) {
+  filter.ingredients = {
+    $elemMatch: { name: { $regex: ingredient, $options: "i" } }
+  };
+}
 
   const sort =
     sortOrder === SORT_ORDER.ASC ? { [sortBy]: 1 } : { [sortBy]: -1 };
