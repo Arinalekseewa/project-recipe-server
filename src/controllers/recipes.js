@@ -130,19 +130,23 @@ export const deleteOwnRecipeController = async (req, res, next) => {
 
 // ---------------- Ivan: Get recipe by ID --------------------
 
-export async function getRecipeByIdController(req, res) {
-  const recipe = await getRecipeById(req.params.recipeId);
-
-  if (recipe === null) {
-    throw new createHttpError.NotFound('Recipe not found');
+export async function getRecipeByIdController(req, res, next) {
+  try {
+    const { recipeId } = req.params; // :white_check_mark: беремо саме recipeId з URL
+    const recipe = await getRecipeById(recipeId);
+    if (!recipe) {
+      throw new createHttpError.NotFound("Recipe not found");
+    }
+    res.status(200).json({
+      status: 200,
+      message: "Successfully found recipe!",
+      data: recipe,
+    });
+  } catch (error) {
+    next(error); // :white_check_mark: відправляємо помилку в error middleware
   }
-
-  res.json({
-    status: 200,
-    message: `Successfully found recipe!`,
-    data: recipe,
-  });
 }
+
 
 // ---------------- Dmitriy: Favourites recipes --------------------
 
