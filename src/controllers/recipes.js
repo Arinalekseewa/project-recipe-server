@@ -131,7 +131,7 @@ export const deleteOwnRecipeController = async (req, res, next) => {
 // ---------------- Ivan: Get recipe by ID --------------------
 
 export async function getRecipeByIdController(req, res) {
-  const recipe = await getRecipeById(req.params.id);
+  const recipe = await getRecipeById(req.params.recipeId);
 
   if (recipe === null) {
     throw new createHttpError.NotFound('Recipe not found');
