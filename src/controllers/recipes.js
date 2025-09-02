@@ -42,7 +42,7 @@ export const getRecipesController = async (req, res, next) => {
       ingredient,
       query,
       page = 1,
-      limit = 10,
+      limit = 12,
     } = req.query;
 
     const filter = {};
@@ -177,7 +177,7 @@ export const getFavoriteRecipes = async (req, res) => {
         pagination: {
           total: 0,
           page,
-          limit,
+          limit: 12,
           totalPages: 0,
         },
       });
@@ -197,7 +197,7 @@ export const getFavoriteRecipes = async (req, res) => {
       pagination: {
         total,
         page,
-        limit,
+        limit: 12,
         totalPages: Math.ceil(total / limit),
       },
     });

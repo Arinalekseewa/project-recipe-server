@@ -25,7 +25,7 @@ export const createRecipe = async (payload) => {
 
 export const getAllRecipes = async ({
   page = 1,
-  limit = 10,
+  limit = 12,
   sortBy = 'createdAt',
   sortOrder = SORT_ORDER.DESC,
   query,
@@ -57,7 +57,7 @@ export const getAllRecipes = async ({
 export const getUserOwnRecipesService = async ({
   userId,
   page = 1,
-  limit = 10,
+  limit = 12,
   sortBy = 'createdAt',
   sortOrder = SORT_ORDER.DESC,
 }) => {
