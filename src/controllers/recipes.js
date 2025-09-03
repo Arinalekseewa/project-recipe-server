@@ -33,36 +33,48 @@ export const getUserOwnRecipesController = async (req, res, next) => {
 
 // ------------------- Arina: Get recipes ---------------------
 
+import Ingredient from "../models/Ingredient.js";
+import mongoose from "mongoose";
+
 export const getRecipesController = async (req, res, next) => {
   try {
-    console.log("Request query:", req.query); // <-- логування
+    console.log("Request query:", req.query);
 
-    const {
-      category,
-      ingredient,
-      query,
-      page = 1,
-      limit = 12,
-    } = req.query;
-
+    const { category, ingredient: ingredientQuery, query, page = 1, limit = 12 } = req.query;
     const filter = {};
 
-    if (category) {
-      filter.category = category;
+    // Фільтр по категорії
+    if (category) filter.category = category;
+
+    // Фільтр по інгредієнту
+    if (ingredientQuery) {
+      let ingredientId;
+
+      // Якщо переданий рядок не ObjectId, шукаємо по назві інгредієнта
+      if (!mongoose.Types.ObjectId.isValid(ingredientQuery)) {
+        const ingredientDoc = await Ingredient.findOne({ name: ingredientQuery });
+        if (!ingredientDoc) {
+          return res.status(404).json({ status: "error", message: "Ingredient not found" });
+        }
+        ingredientId = ingredientDoc._id;
+      } else {
+        ingredientId = ingredientQuery;
+      }
+
+      filter["ingredients.ingredient"] = ingredientId;
     }
 
-    if (ingredient) {
-      filter["ingredients.ingredient"] = ingredient;
-    }
-
-    if (query) {
-      filter.title = { $regex: query, $options: "i" };
-    }
+    // Пошук по назві рецепта
+    if (query) filter.title = { $regex: query, $options: "i" };
 
     const skip = (page - 1) * limit;
 
+    // Отримуємо рецепти з populate інгредієнтів
     const [recipes, total] = await Promise.all([
-      RecipesCollection.find(filter).skip(skip).limit(Number(limit)),
+      RecipesCollection.find(filter)
+        .populate("ingredients.ingredient", "name img desc")
+        .skip(skip)
+        .limit(Number(limit)),
       RecipesCollection.countDocuments(filter),
     ]);
 
@@ -74,7 +86,7 @@ export const getRecipesController = async (req, res, next) => {
       recipes,
     });
   } catch (error) {
-    console.error("Error in getRecipesController:", error); // <-- лог помилки
+    console.error("Error in getRecipesController:", error);
     next(error);
   }
 };

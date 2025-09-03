@@ -34,15 +34,11 @@ const recipeSchema = new Schema(
       max: 360,
     },
     ingredients: [
-      {
-        ingredient: {
-          type: Schema.Types.ObjectId,
-          ref: "ingredient",
-          required: true,
-        },
-        measure: { type: String, required: true },
-      },
-    ],
+  {
+    id: { type: Schema.Types.ObjectId, ref: "ingredient", required: true },
+    measure: { type: String, required: true },
+  }
+],
     cals: {
       type: Number,
       min: 1,
