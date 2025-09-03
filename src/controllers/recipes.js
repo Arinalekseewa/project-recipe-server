@@ -8,7 +8,6 @@ import {
 } from '../services/recipes.js';
 import { RecipesCollection } from '../db/models/recipes.js';
 import Ingredient from "../db/models/ingredient.js";
-import mongoose from "mongoose";
 
 // ********* ================== Controllers ================== *********//
 // ------------------- Yaroslav: Get users own recipes ---------------------
@@ -34,9 +33,6 @@ export const getUserOwnRecipesController = async (req, res, next) => {
 };
 
 // ------------------- Arina: Get recipes ---------------------
-
-import { RecipesCollection } from "../models/Recipe.js";
-import Ingredient from "../models/Ingredient.js";
 
 export const getRecipesController = async (req, res, next) => {
   try {
