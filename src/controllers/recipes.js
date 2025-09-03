@@ -60,7 +60,7 @@ export const getRecipesController = async (req, res, next) => {
         ingredientId = ingredientQuery;
       }
 
-      filter["ingredients.ingredient"] = ingredientId;
+      filter["ingredients.id"] = ingredientId;
     }
 
     // Пошук по назві рецепта
@@ -71,7 +71,7 @@ export const getRecipesController = async (req, res, next) => {
     // Отримуємо рецепти з populate інгредієнтів
     const [recipes, total] = await Promise.all([
       RecipesCollection.find(filter)
-        .populate("ingredients.ingredient", "name img desc")
+        .populate("ingredients.id", "name img desc")
         .skip(skip)
         .limit(Number(limit)),
       RecipesCollection.countDocuments(filter),
