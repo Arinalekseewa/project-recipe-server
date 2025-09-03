@@ -35,61 +35,74 @@ export const getUserOwnRecipesController = async (req, res, next) => {
 
 // ------------------- Arina: Get recipes ---------------------
 
+import { RecipesCollection } from "../models/Recipe.js";
+import Ingredient from "../models/Ingredient.js";
+
 export const getRecipesController = async (req, res, next) => {
   try {
-    console.log("Request query:", req.query);
-
-    const { category, ingredient: ingredientQuery, query, page = 1, limit = 12 } = req.query;
+    const { category, ingredient, query, page = 1, limit = 12 } = req.query;
     const filter = {};
 
-    // Фільтр по категорії
     if (category) filter.category = category;
 
-    // Фільтр по інгредієнту
-    if (ingredientQuery) {
-      let ingredientId;
+    if (query) filter.title = { $regex: query, $options: "i" };
 
-      // Якщо переданий рядок не ObjectId, шукаємо по назві інгредієнта
-      if (!mongoose.Types.ObjectId.isValid(ingredientQuery)) {
-        const ingredientDoc = await Ingredient.findOne({ name: ingredientQuery });
-        if (!ingredientDoc) {
-          return res.status(404).json({ status: "error", message: "Ingredient not found" });
-        }
-        ingredientId = ingredientDoc._id;
-      } else {
-        ingredientId = ingredientQuery;
+    let recipesQuery = RecipesCollection.find(filter);
+
+    if (ingredient) {
+      // Знайти Ingredient по назві
+      const ingredientDoc = await Ingredient.findOne({ name: ingredient });
+      if (!ingredientDoc) {
+        return res.json({
+          page: Number(page),
+          limit: Number(limit),
+          total: 0,
+          totalPages: 0,
+          recipes: [],
+        });
       }
 
-      filter["ingredients.id"] = ingredientId;
-    }
+      const ingredientIdString = ingredientDoc._id.toString();
 
-    // Пошук по назві рецепта
-    if (query) filter.title = { $regex: query, $options: "i" };
+      // Фільтруємо вручну по рядку (бо в базі рядок, а не ObjectId)
+      recipesQuery = recipesQuery.where("ingredients").elemMatch({ id: ingredientIdString });
+    }
 
     const skip = (page - 1) * limit;
 
-    // Отримуємо рецепти з populate інгредієнтів
     const [recipes, total] = await Promise.all([
-      RecipesCollection.find(filter)
-        .populate("ingredients.id", "name img desc")
-        .skip(skip)
-        .limit(Number(limit)),
-      RecipesCollection.countDocuments(filter),
+      recipesQuery.skip(skip).limit(Number(limit)),
+      recipesQuery.model.countDocuments(recipesQuery.getFilter()),
     ]);
+
+    // Для populate будемо трансформувати вручну
+    const populatedRecipes = await Promise.all(
+      recipes.map(async (r) => {
+        const populatedIngredients = await Promise.all(
+          r.ingredients.map(async (ing) => {
+            const doc = await Ingredient.findById(ing.id);
+            return {
+              ...ing.toObject(),
+              ingredient: doc ? { name: doc.name, img: doc.img, desc: doc.desc } : null,
+            };
+          })
+        );
+        return { ...r.toObject(), ingredients: populatedIngredients };
+      })
+    );
 
     res.json({
       page: Number(page),
       limit: Number(limit),
       total,
       totalPages: Math.ceil(total / limit),
-      recipes,
+      recipes: populatedRecipes,
     });
-  } catch (error) {
-    console.error("Error in getRecipesController:", error);
-    next(error);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
-
 
 // ------------------- Aleksandr: Create own recipes ---------------------
 
