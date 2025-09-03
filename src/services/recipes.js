@@ -20,7 +20,6 @@ export const createRecipe = async (payload) => {
     thumb: payload.thumb,
     ingredients: payload.ingredients ?? [],
     time: payload.time,
-    steps: payload.steps ?? [],
     owner: ownerId,
   };
 
