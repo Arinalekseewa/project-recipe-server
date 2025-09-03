@@ -106,15 +106,15 @@ export const createRecipeController = async (req, res, next) => {
   const ownerId = req.user?.id ?? req.user?._id;
   if (!ownerId) return next(createHttpError(401, 'Unauthorized'));
 
-  if (
-    !req.body?.title ||
-    typeof req.body.title !== 'string' ||
-    req.body.title.trim().length < 2
-  ) {
-    return next(
-      createHttpError(400, 'Field "title" is required (min 2 chars)'),
-    );
-  }
+  // if (
+  //   !req.body?.title ||
+  //   typeof req.body.title !== 'string' ||
+  //   req.body.title.trim().length < 2
+  // ) {
+  //   return next(
+  //     createHttpError(400, 'Field "title" is required (min 2 chars)'),
+  //   );
+  // }
 
   const recipe = await createRecipe({ ...req.body, owner: ownerId });
 
