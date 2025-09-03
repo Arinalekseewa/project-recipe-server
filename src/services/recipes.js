@@ -13,8 +13,13 @@ export const createRecipe = async (payload) => {
 
   const doc = {
     title: payload.title,
+    category: payload.category,
     description: payload.description ?? '',
+    instructions: payload.instructions ?? [],
+    area: payload.area,
+    thumb: payload.thumb,
     ingredients: payload.ingredients ?? [],
+    time: payload.time,
     steps: payload.steps ?? [],
     owner: ownerId,
   };
