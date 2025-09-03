@@ -7,6 +7,8 @@ import {
   getRecipeById,
 } from '../services/recipes.js';
 import { RecipesCollection } from '../db/models/recipes.js';
+import Ingredient from "../db/models/ingredient.js";
+import mongoose from "mongoose";
 
 // ********* ================== Controllers ================== *********//
 // ------------------- Yaroslav: Get users own recipes ---------------------
@@ -33,9 +35,6 @@ export const getUserOwnRecipesController = async (req, res, next) => {
 
 // ------------------- Arina: Get recipes ---------------------
 
-import Ingredient from "../models/Ingredient.js";
-import mongoose from "mongoose";
-
 export const getRecipesController = async (req, res, next) => {
   try {
     console.log("Request query:", req.query);
@@ -61,7 +60,7 @@ export const getRecipesController = async (req, res, next) => {
         ingredientId = ingredientQuery;
       }
 
-      filter["ingredients.ingredient"] = ingredientId;
+      filter["ingredients.id"] = ingredientId;
     }
 
     // Пошук по назві рецепта
@@ -72,7 +71,7 @@ export const getRecipesController = async (req, res, next) => {
     // Отримуємо рецепти з populate інгредієнтів
     const [recipes, total] = await Promise.all([
       RecipesCollection.find(filter)
-        .populate("ingredients.ingredient", "name img desc")
+        .populate("ingredients.id", "name img desc")
         .skip(skip)
         .limit(Number(limit)),
       RecipesCollection.countDocuments(filter),
