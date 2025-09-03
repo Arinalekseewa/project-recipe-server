@@ -52,7 +52,7 @@ export const getRecipesController = async (req, res, next) => {
     }
 
     if (ingredient) {
-      filter.ingredients = { $elemMatch: { $regex: ingredient, $options: "i" } };
+      filter["ingredients.ingredient"] = ingredient;
     }
 
     if (query) {

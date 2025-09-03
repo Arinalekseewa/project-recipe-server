@@ -35,9 +35,9 @@ const recipeSchema = new Schema(
     },
     ingredients: [
       {
-        ingredient: { type: String, required: true },
-        ingredientAmount: { type: Number, required: true, min: 2, max: 16 },
-      }
+        ingredient: { type: Schema.Types.ObjectId, ref: "ingredient", required: true },
+        measure: { type: String, required: true },
+      },
     ],
     cals: {
       type: Number,
