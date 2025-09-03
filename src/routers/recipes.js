@@ -12,6 +12,7 @@ import {
   deleteOwnRecipeController
 } from '../controllers/recipes.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { upload } from '../middlewares/multer.js';
 
 const router = Router();
 
@@ -21,7 +22,7 @@ router.delete('/:recipeId', authenticate, isValidId, ctrlWrapper(deleteOwnRecipe
 router.get('/favorites', authenticate, ctrlWrapper(getFavoriteRecipes),);
 router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
 router.post('/add-recipe', authenticate, ctrlWrapper(createRecipeController));
-router.post('/favorites/:recipeId', authenticate, isValidId, ctrlWrapper(addFavorite));
+router.post('/favorites/:recipeId', authenticate, isValidId, upload.single("image"), ctrlWrapper(addFavorite));
 router.delete('/favorites/:recipeId', authenticate, isValidId, ctrlWrapper(removeFavorite));
 
 
