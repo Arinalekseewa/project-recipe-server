@@ -1,5 +1,6 @@
 // ******* ================== Imports ================== ********
-
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 import createHttpError from 'http-errors';
 import {
   createRecipe,
@@ -7,7 +8,7 @@ import {
   getRecipeById,
 } from '../services/recipes.js';
 import { RecipesCollection } from '../db/models/recipes.js';
-import Ingredient from "../db/models/ingredient.js";
+import {IngredientCollection} from "../db/models/ingredient.js";
 
 // ********* ================== Controllers ================== *********//
 // ------------------- Yaroslav: Get users own recipes ---------------------
@@ -47,7 +48,7 @@ export const getRecipesController = async (req, res, next) => {
 
     if (ingredient) {
       // Знайти Ingredient по назві
-      const ingredientDoc = await Ingredient.findOne({ name: ingredient });
+      const ingredientDoc = await IngredientCollection.findOne({ name: ingredient });
       if (!ingredientDoc) {
         return res.json({
           page: Number(page),
@@ -76,7 +77,7 @@ export const getRecipesController = async (req, res, next) => {
       recipes.map(async (r) => {
         const populatedIngredients = await Promise.all(
           r.ingredients.map(async (ing) => {
-            const doc = await Ingredient.findById(ing.id);
+            const doc = await IngredientCollection.findById(ing.id);
             return {
               ...ing.toObject(),
               ingredient: doc ? { name: doc.name, img: doc.img, desc: doc.desc } : null,
@@ -103,26 +104,33 @@ export const getRecipesController = async (req, res, next) => {
 // ------------------- Aleksandr: Create own recipes ---------------------
 
 export const createRecipeController = async (req, res, next) => {
-  const ownerId = req.user?.id ?? req.user?._id;
-  if (!ownerId) return next(createHttpError(401, 'Unauthorized'));
+  try {
+    const photo = req.file;
+    let photoUrl = null;
+    try {
+      console.log('photo', photo);
+      if (photo) {
+        const localPath = await saveFileToUploadDir(photo);
+        photoUrl = await saveFileToCloudinary(localPath);
+      }
+    } catch {
+      return next(createHttpError(500, 'Failed to upload photo'));
+    }
+    console.log(req.body);
+    const recipe = await createRecipe({
+      ...req.body,
+      owner: req.user.id,
+      thumb: photoUrl,
+    });
 
-  // if (
-  //   !req.body?.title ||
-  //   typeof req.body.title !== 'string' ||
-  //   req.body.title.trim().length < 2
-  // ) {
-  //   return next(
-  //     createHttpError(400, 'Field "title" is required (min 2 chars)'),
-  //   );
-  // }
-
-  const recipe = await createRecipe({ ...req.body, owner: ownerId });
-
-  res.status(201).json({
-    status: 201,
-    message: 'Recipe created',
-    data: recipe,
-  });
+    res.status(201).json({
+      status: 201,
+      message: 'Successfully created a recipe!',
+      data: recipe,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 // ------------------- Arina: Delete own recipes ---------------------

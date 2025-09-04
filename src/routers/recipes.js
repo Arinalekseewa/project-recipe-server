@@ -21,8 +21,8 @@ router.get('/own', authenticate, ctrlWrapper(getUserOwnRecipesController));
 router.delete('/:recipeId', authenticate, isValidId, ctrlWrapper(deleteOwnRecipeController));
 router.get('/favorites', authenticate, ctrlWrapper(getFavoriteRecipes),);
 router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
-router.post('/add-recipe', authenticate, ctrlWrapper(createRecipeController));
-router.post('/favorites/:recipeId', authenticate, isValidId, upload.single("image"), ctrlWrapper(addFavorite));
+router.post('/add-recipe', authenticate, upload.single('thumb'), ctrlWrapper(createRecipeController));
+router.post('/favorites/:recipeId', authenticate, isValidId, ctrlWrapper(addFavorite));
 router.delete('/favorites/:recipeId', authenticate, isValidId, ctrlWrapper(removeFavorite));
 
 
