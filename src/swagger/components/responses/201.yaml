@@ -1,5 +1,4 @@
-201:
-  description: Recipe successfully created
+description: Recipe successfully created
   content:
     application/json:
       schema:

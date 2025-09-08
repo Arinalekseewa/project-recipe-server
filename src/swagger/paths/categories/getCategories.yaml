@@ -1,0 +1,17 @@
+tags:
+  - Categories
+summary: Get categories list
+operationId: getCategories
+description: 'Retrieve a list of all categories.'
+security: []
+responses:
+  200:
+    description: Successfully found categories
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/schemas.yaml#/CategoriesResponse'
+  404:
+    $ref: ../../components/responses/404.yaml
+  500:
+    $ref: ../../components/responses/500.yaml

@@ -1,28 +1,62 @@
 import { model, Schema } from 'mongoose';
 
-const recipesSchema = new Schema(
+const recipeSchema = new Schema(
   {
-    name: {
+    title: {
+      type: String,
+      required: true,
+      maxlength: 64,
+    },
+    category: {
       type: String,
       required: true,
     },
-    age: {
-      type: Number,
-      required: true,
-    },
-    gender: {
+    area: {
       type: String,
       required: true,
-      enum: ['male', 'female', 'other'],
+      minlength: 5,
+      maxlength: 20,
     },
-    avgMark: {
+    instructions: {
+      type: String,
+      required: true,
+      maxlength: 1200,
+    },
+    description: {
+      type: String,
+      required: true,
+      maxlength: 200,
+    },
+    time: {
       type: Number,
       required: true,
+      min: 1,
+      max: 360,
     },
-    onDuty: {
-      type: Boolean,
+    ingredients: [
+      {
+        id: {
+          type: String,
+          required: true,
+        },
+        measure: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    cals: {
+      type: Number,
+      min: 1,
+      max: 10000,
+    },
+    thumb: {
+      type: String,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
       required: true,
-      default: false,
     },
   },
   {
@@ -31,4 +65,4 @@ const recipesSchema = new Schema(
   },
 );
 
-export const RecipesCollection = model('recipe', recipesSchema);
+export const RecipesCollection = model('recipe', recipeSchema);

@@ -1,0 +1,79 @@
+openapi: 3.1.0
+info:
+  title: Headliner API
+  version: 1.0.0
+  description: This API provides a complete solution for managing a recipe-sharing platform. It allows users to browse, search, and filter recipes, as well as register, log in, and manage their profiles and favorite recipes. The API supports both public and private routes with authentication and authorization mechanisms.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: https://tasteorama.onrender.com
+
+tags:
+  - name: Auth
+    description: User authentication
+  - name: Users
+    description: User information
+  - name: Categories
+    description: Recipe categories
+  - name: Ingredients
+    description: Recipe ingredients
+  - name: Recipes
+    description: Recipe information
+
+paths:
+  /auth/register:
+    post:
+      $ref: '../src/swagger/paths/auth/register.yaml'
+  /auth/login:
+    post:
+      $ref: '../src/swagger/paths/auth/login.yaml'
+  /auth/logout:
+    post:
+      $ref: '../src/swagger/paths/auth/logout.yaml'
+  /users/me:
+    get:
+      $ref: '../src/swagger/paths/users/me.yaml'
+  /categories:
+    get:
+      $ref: '../src/swagger/paths/categories/getCategories.yaml'
+  /ingredients:
+    get:
+      $ref: '../src/swagger/paths/ingredients/getIngredients.yaml'
+  /recipes:
+    post:
+      $ref: '../src/swagger/paths/recipes/postCreat.yaml'
+    get:
+      $ref: '../src/swagger/paths/recipes/getAll.yaml'
+  /recipes/own:
+    get:
+      $ref: '../src/swagger/paths/recipes/getOwn.yaml'
+  /recipes/favorites/{recipeId}:
+    post:
+      $ref: '../src/swagger/paths/recipes/{recipeId}/postFav.yaml'
+    delete:
+      $ref: '../src/swagger/paths/recipes/{recipeId}/deleteFav.yaml'
+  /recipes/favorites:
+    get:
+      $ref: '../src/swagger/paths/recipes/{recipeId}/getFav.yaml'
+  /recipes/{recipeId}:
+    get:
+      $ref: '../src/swagger/paths/recipes/{recipeId}/getById.yaml'
+    delete:
+      $ref: '../src/swagger/paths/recipes/deleteRecipe.yaml'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    LoginRequest:
+      $ref: '../src/swagger/components/schemas/schemas.yaml#/LoginRequest'
+    LoginResponse:
+      $ref: '../src/swagger/components/schemas/schemas.yaml#/LoginResponse'
+    UnauthorizedErrorResponse:
+      $ref: '../src/swagger/components/schemas/schemas.yaml#/UnauthorizedErrorResponse'
+    NotFoundErrorResponse:
+      $ref: '../src/swagger/components/schemas/schemas.yaml#/NotFoundErrorResponse'

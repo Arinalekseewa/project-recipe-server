@@ -1,0 +1,31 @@
+tags:
+  - Recipes
+summary: Get all favorite recipes
+operationId: getFavoriteRecipes
+description: 'Gets the list of favorite recipes of the current user'
+security:
+  - bearerAuth: []
+parameters:
+  - in: query
+    name: page
+    schema:
+      type: integer
+      example: 1
+  - in: query
+    name: perPage
+    schema:
+      type: integer
+      example: 12
+responses:
+  '200':
+    description: Successfully found recipes!
+    content:
+      application/json:
+        schema:
+          $ref: '../../../components/schemas/schemas.yaml#/components/schemas/RecipesResponsesAll'
+  '401':
+    $ref: ../../../components/responses/401.yaml
+  '404':
+    $ref: ../../../components/responses/404.yaml
+  '500':
+    $ref: ../../../components/responses/500.yaml

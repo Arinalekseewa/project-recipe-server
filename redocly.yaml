@@ -6,13 +6,12 @@ extends:
   - recommended
 rules:
   no-unused-components: error
-theme:
-  htmlTemplate: ./docs/index.html
-  colors:
-    primary:
-      main: '#32329f'
-  generateCodeSamples:
-    languages:
-      - lang: curl
-      - lang: Node.js
-      - lang: JavaScript
+  # theme:
+  #   htmlTemplate: ./docs/index.html
+  #   colors:
+  #     primary: "#5B21B6"
+#  generateCodeSamples:
+#   languages:
+#    - lang: curl
+#   - lang: Node.js
+#  - lang: JavaScript

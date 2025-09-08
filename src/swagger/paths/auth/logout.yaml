@@ -1,0 +1,13 @@
+tags:
+  - Auth
+summary: User logout
+operationId: logoutUser
+description: Read `refreshToken` and `sessionId` from HTTP-only cookies,
+  validate session, delete it, and clear both cookies
+security:
+  - bearerAuth: []
+responses:
+  204:
+    description: Successfully logged out (No Content)
+  404:
+    $ref: ../../components/responses/404.yaml

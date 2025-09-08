@@ -1,5 +1,4 @@
-'200':
-  description: Successfully found recipes!
+description: Successfully found recipes!
   content:
     application/json:
       schema:
